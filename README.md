@@ -15,11 +15,14 @@ Projekt im Modul SWEN (HSLU, HS2026).
 | --- | --- |
 | **Üben** (Kernoperation 1) | Aufgabe wie «noi · andare · Passato prossimo», Antwort eintippen, sofortiges Feedback mit ganzer Konjugationszeile. Fehlende Akzente gelten als «fast richtig». |
 | **Nachschlagen** (Kernoperation 2) | Vollständige Tabelle für Presente und Passato prossimo inkl. Hilfsverb und Partizip, mit Knopf «Dieses Verb üben». |
+| **Zeitenwahl** | Automatisch (Lernpfad schaltet die nächste Zeit frei) oder eigene Auswahl, z. B. nur Passato prossimo. Die Wahl wird pro Benutzer gespeichert. |
 | **Fortschritt** | Sicherheit pro Zeit, Karteikasten-Fächer, Trefferquote, Übungstage, schwächste Verben, letzte Antworten. |
 | **Beispielsätze** | Echte italienische Sätze mit deutscher Übersetzung von [Tatoeba](https://tatoeba.org) (externer Webdienst). |
 
 Umfang der ersten Version: 60 häufige Verben (regelmässige, *-isc-*-Verben und
-die wichtigsten unregelmässigen), Zeiten Presente und Passato prossimo.
+die wichtigsten unregelmässigen), Zeiten Presente und Passato prossimo. Weitere
+Zeiten lassen sich über die Zeiten-Registry ergänzen, ohne Backend, Lernlogik
+oder Frontend umzubauen (siehe `docs/extending.md`).
 
 ## Get started
 
@@ -88,7 +91,7 @@ und ohne Datenbank testbar ist:
 
 | Datei | Aufgabe |
 | --- | --- |
-| `src/app/conjugation.py` | Regelbasierte Konjugation: Endungen für *-are/-ere/-ire*, Sonderregeln (*cercare → cerchi*, *mangiare → mangi*, *capire → capisco*), Ausnahmen aus `data/verbs.json`, Antwortprüfung (Akzente, Pronomen, männlich/weiblich bei *essere*). |
+| `src/app/conjugation.py` | Zeiten-Registry und regelbasierte Konjugation: Endungen für *-are/-ere/-ire*, Sonderregeln (*cercare → cerchi*, *mangiare → mangi*, *capire → capisco*), Ausnahmen aus `data/verbs.json`, Antwortprüfung (Akzente, Pronomen, männlich/weiblich bei *essere*). |
 | `src/app/learning.py` | Karteikasten (Leitner, 5 Fächer) und Freischaltung: Start mit 8 Verben; sobald 80 % der aktiven Formen sicher sind (Fach ≥ 3), kommen 4 neue Verben bzw. der Passato prossimo dazu. |
 | `src/app/db.py` | Datenmodell (Benutzer, Lernstand pro Item, alle Antworten) mit SQLAlchemy. |
 | `src/app/examples.py` | Abfrage der Tatoeba-API mit Zeitlimit, Cache und Rückfallebene, falls der Dienst nicht erreichbar ist. |
@@ -100,7 +103,9 @@ Weitere Dokumentation:
 
 * `docs/requirements.md`: Anforderungen und Abgrenzung
 * `docs/architecture.md`: Architektur, Datenmodell, Schnittstelle
-* `docs/decisions/`: Entscheide (Decision Records)
+* `docs/decisions/`: 14 Entscheide (Decision Records), Übersicht in `docs/architecture.md`
+* `docs/challenges.md`: Herausforderungen und wie sie gelöst wurden
+* `docs/extending.md`: neue Zeit oder neues Verb hinzufügen
 
 ## Quellen und Lizenzen
 

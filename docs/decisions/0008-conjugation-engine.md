@@ -26,4 +26,4 @@ Die Regeln sind der fachlich interessante Teil und lassen sich mit Unittests abs
 
 ## Consequences
 
-Neue Verben brauchen nur einen Eintrag in verbs.json, unregelmässige zusätzlich ihre Formen.
+Neue Verben brauchen nur einen Eintrag in verbs.json, unregelmässige zusätzlich ihre Formen. Neue Zeiten werden über die Registry ergänzt (siehe 0010).

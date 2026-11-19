@@ -17,7 +17,7 @@ liefert das Frontend als statische Dateien gleich mit aus (ein Webdienst).
 | Schicht | Modul | Abhängigkeiten |
 | --- | --- | --- |
 | Web / REST | `main.py` | FastAPI, alle anderen Module |
-| Fachlogik Konjugation | `conjugation.py` | nur Python-Standardbibliothek |
+| Fachlogik Konjugation | `conjugation.py` (inkl. Zeiten-Registry) | nur Python-Standardbibliothek |
 | Fachlogik Lernen | `learning.py` | nur `conjugation.py` |
 | Persistenz | `db.py` | SQLAlchemy |
 | Externer Dienst | `examples.py` | httpx |
@@ -34,6 +34,7 @@ erDiagram
     users ||--o{ attempts : hat
     users { int id PK
             string name UK
+            string tenses
             datetime created_at }
     progress { int id PK
                int user_id FK
@@ -54,6 +55,7 @@ erDiagram
                datetime created_at }
 ```
 
+* `users.tenses`: gewählte Zeiten, kommagetrennt; leer = automatisch (Lernpfad).
 * `progress`: genau eine Zeile pro Benutzer und Item (Verb, Zeit, Person),
   eindeutig über einen Unique-Constraint.
 * `attempts`: jede Antwort, für Verlauf, Trefferquote und Übungstage.
@@ -65,10 +67,12 @@ erDiagram
 | Methode | Pfad | Zweck |
 | --- | --- | --- |
 | GET | `/api/health` | Health-Check für Render und CI |
+| GET | `/api/tenses` | alle registrierten Zeiten in der Reihenfolge des Lernpfads |
 | GET | `/api/verbs` | alle Verben |
 | GET | `/api/verbs/{verb}` | Konjugationstabelle (Nachschlagen) |
 | GET | `/api/verbs/{verb}/examples?tense=&person=` | Beispielsätze (Tatoeba) |
 | POST | `/api/users` | anmelden bzw. anlegen (nur Name) |
+| PUT | `/api/users/{name}/settings` | Zeiten wählen (`{"tenses": [...]}`, leer = automatisch) |
 | GET | `/api/users/{name}/exercise` | nächste Aufgabe, optional `verb`, `tense` |
 | POST | `/api/users/{name}/answers` | Antwort prüfen und Lernstand speichern (Üben) |
 | GET | `/api/users/{name}/progress` | Fortschritt |
@@ -97,3 +101,34 @@ sequenceDiagram
     B->>D: Lernstand + Antwort speichern
     B-->>U: Feedback, Fach, Freischaltungen
 ```
+
+## Erweiterbarkeit
+
+* **Neue Zeit:** eine Funktion in `conjugation.py` schreiben und mit
+  `register(Tense(...))` anmelden. Alle anderen Teile lesen die Registry
+  (`TENSES`, `tense_order()`, `/api/tenses`). Anleitung: `docs/extending.md`.
+* **Neues Verb:** Eintrag in `src/app/data/verbs.json`.
+* **Lernparameter:** Startmenge, Schrittgrösse, Schwelle und Wartezeiten sind
+  Konstanten oben in `learning.py`.
+
+## Entscheide
+
+| Nr | Entscheid |
+| --- | --- |
+| 0001 | Backend-Framework FastAPI |
+| 0002 | Frontend Vue 3 über CDN |
+| 0003 | Benutzer mit Namen ohne Passwort |
+| 0004 | Umfang der ersten Version |
+| 0005 | SQLAlchemy mit SQLite lokal, PostgreSQL produktiv |
+| 0006 | Hosting auf Render und Neon |
+| 0007 | Tatoeba als externer Webdienst |
+| 0008 | Konjugation regelbasiert mit Ausnahmeliste |
+| 0009 | Karteikasten mit schrittweiser Freischaltung |
+| 0010 | Zeiten als Registry (Erweiterbarkeit) |
+| 0011 | Zeitenwahl: eigene Auswahl geht vor dem Lernpfad |
+| 0012 | Schichten: Fachlogik ohne Framework und Datenbank |
+| 0013 | Antwortprüfung mit gezielten Toleranzen |
+| 0014 | Verbdaten als JSON statt in der Datenbank |
+
+Details in `docs/decisions/`, Herausforderungen und ihre Lösungen in
+`docs/challenges.md`.
