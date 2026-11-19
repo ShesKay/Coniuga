@@ -65,7 +65,7 @@ Danach ist die App unter http://localhost:8000 erreichbar.
 ## Deployment
 
 * **App:** [Render](https://render.com), Docker-Webdienst, beschrieben in
-  `render.yaml`. Jeder Push auf `main` löst automatisch ein neues Deployment aus.
+  `render.yaml`. Jeder Push auf `master` löst automatisch ein neues Deployment aus.
 * **Datenbank:** PostgreSQL bei [Neon](https://neon.tech). Die Verbindungs-URL
   wird bei Render als Umgebungsvariable `DATABASE_URL` hinterlegt.
 * Öffentliche URL: *wird nach dem ersten Deployment eingetragen*

@@ -1,11 +1,11 @@
 # Render Blueprint: beschreibt den Webdienst als Code.
-# Render baut bei jedem Push auf main automatisch das Docker-Image und deployt es.
+# Render baut bei jedem Push auf master automatisch das Docker-Image und deployt es.
 services:
   - type: web
     name: coniuga
     runtime: docker
     plan: free
-    branch: main
+    branch: master
     autoDeploy: true
     healthCheckPath: /api/health
     envVars:

@@ -22,7 +22,7 @@ Render (Docker-Webdienst, render.yaml) und Neon (PostgreSQL). Entschieden von Ka
 
 ## Reasons
 
-Gratis, automatisches Deployment bei jedem Push auf main, Datenbank ohne Ablaufdatum. Das Docker-Image ist dasselbe, das in der CI gebaut und getestet wird.
+Gratis, automatisches Deployment bei jedem Push auf master, Datenbank ohne Ablaufdatum. Das Docker-Image ist dasselbe, das in der CI gebaut und getestet wird.
 
 ## Consequences
 
