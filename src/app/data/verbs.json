@@ -1,0 +1,533 @@
+[
+ {
+  "infinitive": "essere",
+  "meaning": "sein",
+  "auxiliary": "essere",
+  "participle": "stato",
+  "presente": [
+   "sono",
+   "sei",
+   "è",
+   "siamo",
+   "siete",
+   "sono"
+  ],
+  "rank": 1
+ },
+ {
+  "infinitive": "avere",
+  "meaning": "haben",
+  "auxiliary": "avere",
+  "participle": "avuto",
+  "presente": [
+   "ho",
+   "hai",
+   "ha",
+   "abbiamo",
+   "avete",
+   "hanno"
+  ],
+  "rank": 2
+ },
+ {
+  "infinitive": "fare",
+  "meaning": "machen",
+  "auxiliary": "avere",
+  "participle": "fatto",
+  "presente": [
+   "faccio",
+   "fai",
+   "fa",
+   "facciamo",
+   "fate",
+   "fanno"
+  ],
+  "rank": 3
+ },
+ {
+  "infinitive": "andare",
+  "meaning": "gehen",
+  "auxiliary": "essere",
+  "presente": [
+   "vado",
+   "vai",
+   "va",
+   "andiamo",
+   "andate",
+   "vanno"
+  ],
+  "rank": 4
+ },
+ {
+  "infinitive": "parlare",
+  "meaning": "sprechen",
+  "auxiliary": "avere",
+  "rank": 5
+ },
+ {
+  "infinitive": "mangiare",
+  "meaning": "essen",
+  "auxiliary": "avere",
+  "rank": 6
+ },
+ {
+  "infinitive": "abitare",
+  "meaning": "wohnen",
+  "auxiliary": "avere",
+  "rank": 7
+ },
+ {
+  "infinitive": "lavorare",
+  "meaning": "arbeiten",
+  "auxiliary": "avere",
+  "rank": 8
+ },
+ {
+  "infinitive": "potere",
+  "meaning": "können",
+  "auxiliary": "avere",
+  "participle": "potuto",
+  "presente": [
+   "posso",
+   "puoi",
+   "può",
+   "possiamo",
+   "potete",
+   "possono"
+  ],
+  "rank": 9
+ },
+ {
+  "infinitive": "volere",
+  "meaning": "wollen",
+  "auxiliary": "avere",
+  "participle": "voluto",
+  "presente": [
+   "voglio",
+   "vuoi",
+   "vuole",
+   "vogliamo",
+   "volete",
+   "vogliono"
+  ],
+  "rank": 10
+ },
+ {
+  "infinitive": "dovere",
+  "meaning": "müssen",
+  "auxiliary": "avere",
+  "participle": "dovuto",
+  "presente": [
+   "devo",
+   "devi",
+   "deve",
+   "dobbiamo",
+   "dovete",
+   "devono"
+  ],
+  "rank": 11
+ },
+ {
+  "infinitive": "prendere",
+  "meaning": "nehmen",
+  "auxiliary": "avere",
+  "participle": "preso",
+  "rank": 12
+ },
+ {
+  "infinitive": "dormire",
+  "meaning": "schlafen",
+  "auxiliary": "avere",
+  "rank": 13
+ },
+ {
+  "infinitive": "capire",
+  "meaning": "verstehen",
+  "auxiliary": "avere",
+  "isc": true,
+  "rank": 14
+ },
+ {
+  "infinitive": "stare",
+  "meaning": "sich befinden, bleiben",
+  "auxiliary": "essere",
+  "participle": "stato",
+  "presente": [
+   "sto",
+   "stai",
+   "sta",
+   "stiamo",
+   "state",
+   "stanno"
+  ],
+  "rank": 15
+ },
+ {
+  "infinitive": "venire",
+  "meaning": "kommen",
+  "auxiliary": "essere",
+  "participle": "venuto",
+  "presente": [
+   "vengo",
+   "vieni",
+   "viene",
+   "veniamo",
+   "venite",
+   "vengono"
+  ],
+  "rank": 16
+ },
+ {
+  "infinitive": "dire",
+  "meaning": "sagen",
+  "auxiliary": "avere",
+  "participle": "detto",
+  "presente": [
+   "dico",
+   "dici",
+   "dice",
+   "diciamo",
+   "dite",
+   "dicono"
+  ],
+  "rank": 17
+ },
+ {
+  "infinitive": "sapere",
+  "meaning": "wissen",
+  "auxiliary": "avere",
+  "participle": "saputo",
+  "presente": [
+   "so",
+   "sai",
+   "sa",
+   "sappiamo",
+   "sapete",
+   "sanno"
+  ],
+  "rank": 18
+ },
+ {
+  "infinitive": "vedere",
+  "meaning": "sehen",
+  "auxiliary": "avere",
+  "participle": "visto",
+  "rank": 19,
+  "participle_alt": [
+   "veduto"
+  ]
+ },
+ {
+  "infinitive": "studiare",
+  "meaning": "lernen, studieren",
+  "auxiliary": "avere",
+  "rank": 20
+ },
+ {
+  "infinitive": "cercare",
+  "meaning": "suchen",
+  "auxiliary": "avere",
+  "rank": 21
+ },
+ {
+  "infinitive": "pagare",
+  "meaning": "bezahlen",
+  "auxiliary": "avere",
+  "rank": 22
+ },
+ {
+  "infinitive": "comprare",
+  "meaning": "kaufen",
+  "auxiliary": "avere",
+  "rank": 23
+ },
+ {
+  "infinitive": "finire",
+  "meaning": "beenden",
+  "auxiliary": "avere",
+  "isc": true,
+  "rank": 24
+ },
+ {
+  "infinitive": "partire",
+  "meaning": "abfahren",
+  "auxiliary": "essere",
+  "rank": 25
+ },
+ {
+  "infinitive": "arrivare",
+  "meaning": "ankommen",
+  "auxiliary": "essere",
+  "rank": 26
+ },
+ {
+  "infinitive": "tornare",
+  "meaning": "zurückkehren",
+  "auxiliary": "essere",
+  "rank": 27
+ },
+ {
+  "infinitive": "uscire",
+  "meaning": "hinausgehen",
+  "auxiliary": "essere",
+  "presente": [
+   "esco",
+   "esci",
+   "esce",
+   "usciamo",
+   "uscite",
+   "escono"
+  ],
+  "rank": 28
+ },
+ {
+  "infinitive": "dare",
+  "meaning": "geben",
+  "auxiliary": "avere",
+  "presente": [
+   "do",
+   "dai",
+   "dà",
+   "diamo",
+   "date",
+   "danno"
+  ],
+  "rank": 29
+ },
+ {
+  "infinitive": "bere",
+  "meaning": "trinken",
+  "auxiliary": "avere",
+  "participle": "bevuto",
+  "presente": [
+   "bevo",
+   "bevi",
+   "beve",
+   "beviamo",
+   "bevete",
+   "bevono"
+  ],
+  "rank": 30
+ },
+ {
+  "infinitive": "leggere",
+  "meaning": "lesen",
+  "auxiliary": "avere",
+  "participle": "letto",
+  "rank": 31
+ },
+ {
+  "infinitive": "scrivere",
+  "meaning": "schreiben",
+  "auxiliary": "avere",
+  "participle": "scritto",
+  "rank": 32
+ },
+ {
+  "infinitive": "mettere",
+  "meaning": "legen, stellen",
+  "auxiliary": "avere",
+  "participle": "messo",
+  "rank": 33
+ },
+ {
+  "infinitive": "chiedere",
+  "meaning": "fragen",
+  "auxiliary": "avere",
+  "participle": "chiesto",
+  "rank": 34
+ },
+ {
+  "infinitive": "rispondere",
+  "meaning": "antworten",
+  "auxiliary": "avere",
+  "participle": "risposto",
+  "rank": 35
+ },
+ {
+  "infinitive": "sentire",
+  "meaning": "hören, fühlen",
+  "auxiliary": "avere",
+  "rank": 36
+ },
+ {
+  "infinitive": "aprire",
+  "meaning": "öffnen",
+  "auxiliary": "avere",
+  "participle": "aperto",
+  "rank": 37
+ },
+ {
+  "infinitive": "preferire",
+  "meaning": "bevorzugen",
+  "auxiliary": "avere",
+  "isc": true,
+  "rank": 38
+ },
+ {
+  "infinitive": "guardare",
+  "meaning": "anschauen",
+  "auxiliary": "avere",
+  "rank": 39
+ },
+ {
+  "infinitive": "ascoltare",
+  "meaning": "zuhören",
+  "auxiliary": "avere",
+  "rank": 40
+ },
+ {
+  "infinitive": "aspettare",
+  "meaning": "warten",
+  "auxiliary": "avere",
+  "rank": 41
+ },
+ {
+  "infinitive": "chiamare",
+  "meaning": "rufen, anrufen",
+  "auxiliary": "avere",
+  "rank": 42
+ },
+ {
+  "infinitive": "cominciare",
+  "meaning": "anfangen",
+  "auxiliary": "avere",
+  "rank": 43
+ },
+ {
+  "infinitive": "giocare",
+  "meaning": "spielen",
+  "auxiliary": "avere",
+  "rank": 44
+ },
+ {
+  "infinitive": "viaggiare",
+  "meaning": "reisen",
+  "auxiliary": "avere",
+  "rank": 45
+ },
+ {
+  "infinitive": "imparare",
+  "meaning": "lernen",
+  "auxiliary": "avere",
+  "rank": 46
+ },
+ {
+  "infinitive": "trovare",
+  "meaning": "finden",
+  "auxiliary": "avere",
+  "rank": 47
+ },
+ {
+  "infinitive": "pensare",
+  "meaning": "denken",
+  "auxiliary": "avere",
+  "rank": 48
+ },
+ {
+  "infinitive": "credere",
+  "meaning": "glauben",
+  "auxiliary": "avere",
+  "rank": 49
+ },
+ {
+  "infinitive": "vivere",
+  "meaning": "leben",
+  "auxiliary": "avere",
+  "participle": "vissuto",
+  "rank": 50
+ },
+ {
+  "infinitive": "perdere",
+  "meaning": "verlieren",
+  "auxiliary": "avere",
+  "participle": "perso",
+  "rank": 51,
+  "participle_alt": [
+   "perduto"
+  ]
+ },
+ {
+  "infinitive": "vendere",
+  "meaning": "verkaufen",
+  "auxiliary": "avere",
+  "rank": 52
+ },
+ {
+  "infinitive": "rimanere",
+  "meaning": "bleiben",
+  "auxiliary": "essere",
+  "participle": "rimasto",
+  "presente": [
+   "rimango",
+   "rimani",
+   "rimane",
+   "rimaniamo",
+   "rimanete",
+   "rimangono"
+  ],
+  "rank": 53
+ },
+ {
+  "infinitive": "tenere",
+  "meaning": "halten",
+  "auxiliary": "avere",
+  "participle": "tenuto",
+  "presente": [
+   "tengo",
+   "tieni",
+   "tiene",
+   "teniamo",
+   "tenete",
+   "tengono"
+  ],
+  "rank": 54
+ },
+ {
+  "infinitive": "scegliere",
+  "meaning": "wählen",
+  "auxiliary": "avere",
+  "participle": "scelto",
+  "presente": [
+   "scelgo",
+   "scegli",
+   "sceglie",
+   "scegliamo",
+   "scegliete",
+   "scelgono"
+  ],
+  "rank": 55
+ },
+ {
+  "infinitive": "offrire",
+  "meaning": "anbieten",
+  "auxiliary": "avere",
+  "participle": "offerto",
+  "rank": 56
+ },
+ {
+  "infinitive": "pulire",
+  "meaning": "putzen",
+  "auxiliary": "avere",
+  "isc": true,
+  "rank": 57
+ },
+ {
+  "infinitive": "entrare",
+  "meaning": "eintreten",
+  "auxiliary": "essere",
+  "rank": 58
+ },
+ {
+  "infinitive": "restare",
+  "meaning": "bleiben",
+  "auxiliary": "essere",
+  "rank": 59
+ },
+ {
+  "infinitive": "portare",
+  "meaning": "bringen, tragen",
+  "auxiliary": "avere",
+  "rank": 60
+ }
+]
