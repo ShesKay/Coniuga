@@ -11,17 +11,14 @@ freely.
  * Check `docs/directories.md` for the recommended directory structure.
  * In case Django is used, the entire `src/` directory maybe adapted for Djangos
    directory conventions and the `app/` directory may be removed or ignored.
- * The project currently contains a very simple vanilla Python-based WSGI
-   application that can be run with gunicorn/waitress. Once the developers have
-   decided on the way to go, remove any of this basic code from
-   `src/app/__init__.py` and `src/app/static/index.html`.
- * If the developers choose Flask and deployment to Azure App Service with the
-   built-in Python runtime, follow
-   `docs/deployment-azure-app-service-flask.md`. In particular, create a
-   root-level `startup.sh` for Gunicorn and make sure `src/app/__init__.py`
-   exposes a Flask application object named `app` so `app:app` can be imported.
-   Keep these steps conditional; do not add Flask-specific Azure files when the
-   team chooses Django, FastAPI, Starlette or a container-based deployment.
+ * The backend is a FastAPI application in `src/app/main.py`, started with
+   `uvicorn app.main:app` (see README.md). The frontend (Vue 3 via CDN) lives in
+   `src/app/static`.
+ * Domain logic is kept free of web framework and database code:
+   `src/app/conjugation.py` (conjugation rules) and `src/app/learning.py`
+   (spaced repetition and unlocking). Keep it that way so it stays unit-testable.
+ * Deployment: Docker on Render (`render.yaml`), PostgreSQL on Neon via the
+   environment variable `DATABASE_URL`. No Flask/Azure specific files are used.
 
 ## Design guidelines
 
