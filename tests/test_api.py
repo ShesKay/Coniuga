@@ -125,3 +125,37 @@ def test_database_url_is_converted_for_psycopg(monkeypatch):
     assert database_url() == "postgresql+psycopg://u:p@host/db?sslmode=require"
     monkeypatch.setenv("DATABASE_URL", "postgresql://u:p@host/db")
     assert database_url() == "postgresql+psycopg://u:p@host/db"
+
+
+def test_tenses_endpoint(client):
+    keys = [t["key"] for t in client.get("/api/tenses").json()]
+    assert keys == ["presente", "passato_prossimo"]
+
+
+def test_tense_selection_is_saved_and_used(client):
+    assert login(client).json()["tenses"] is None
+    res = client.put("/api/users/Kay/settings", json={"tenses": ["passato_prossimo"]})
+    assert res.json()["tenses"] == ["passato_prossimo"]
+    assert login(client).json()["tenses"] == ["passato_prossimo"]
+    for _ in range(5):
+        ex = client.get("/api/users/Kay/exercise").json()
+        assert ex["tense"] == "passato_prossimo"
+    prog = client.get("/api/users/Kay/progress").json()
+    assert prog["practice_tenses"] == ["passato_prossimo"]
+    assert prog["unlocked_tenses"] == ["presente"]
+
+
+def test_reset_selection_to_learning_path(client):
+    login(client)
+    client.put("/api/users/Kay/settings", json={"tenses": ["passato_prossimo"]})
+    assert (
+        client.put("/api/users/Kay/settings", json={"tenses": []}).json()["tenses"]
+        is None
+    )
+    assert client.get("/api/users/Kay/exercise").json()["tense"] == "presente"
+
+
+def test_invalid_tense_selection(client):
+    login(client)
+    res = client.put("/api/users/Kay/settings", json={"tenses": ["futuro"]})
+    assert res.status_code == 422

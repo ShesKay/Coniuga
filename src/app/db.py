@@ -32,6 +32,9 @@ class User(Base):
     __tablename__ = "users"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(40), unique=True, index=True)
+    # Gewählte Zeiten, kommagetrennt (z. B. "presente,passato_prossimo").
+    # Leer bedeutet: Lernpfad, also automatisch nach Freischaltung.
+    tenses: Mapped[str | None] = mapped_column(String(200), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
 
 

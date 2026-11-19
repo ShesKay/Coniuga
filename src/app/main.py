@@ -73,6 +73,22 @@ class UserIn(BaseModel):
         return value
 
 
+class SettingsIn(BaseModel):
+    """Gewählte Zeiten; null oder leere Liste = automatisch (Lernpfad)."""
+
+    tenses: list[str] | None = None
+
+    @field_validator("tenses")
+    @classmethod
+    def known_tenses(cls, value: list[str] | None) -> list[str] | None:
+        if not value:
+            return None
+        unknown = [t for t in value if t not in conjugation.TENSES]
+        if unknown:
+            raise ValueError(f"Unbekannte Zeit: {', '.join(unknown)}")
+        return [t for t in conjugation.tense_order() if t in value]
+
+
 class AnswerIn(BaseModel):
     verb: str
     tense: str
@@ -98,6 +114,16 @@ def load_states(session: Session, user: User) -> dict[learning.Key, learning.Ite
     }
 
 
+def selected_tenses(user: User) -> list[str] | None:
+    if not user.tenses:
+        return None
+    return [t for t in user.tenses.split(",") if t in conjugation.TENSES] or None
+
+
+def user_info(user: User, created: bool = False) -> dict:
+    return {"name": user.name, "created": created, "tenses": selected_tenses(user)}
+
+
 def check_verb_and_tense(verb: str, tense: str | None) -> None:
     if verb not in conjugation.load_verbs():
         raise HTTPException(404, f"Unbekanntes Verb: {verb}")
@@ -114,6 +140,15 @@ def index():
 @app.get("/api/health")
 def health():
     return {"status": "ok"}
+
+
+@app.get("/api/tenses")
+def list_tenses():
+    """Alle registrierten Zeiten in der Reihenfolge des Lernpfads."""
+    return [
+        {"key": t, "label": conjugation.TENSES[t].label, "order": i + 1}
+        for i, t in enumerate(conjugation.tense_order())
+    ]
 
 
 @app.get("/api/verbs")
@@ -160,7 +195,16 @@ def create_or_login(data: UserIn, session: SessionDep):
         session.add(user)
         session.commit()
         created = True
-    return {"name": user.name, "created": created}
+    return user_info(user, created)
+
+
+@app.put("/api/users/{name}/settings")
+def update_settings(name: str, data: SettingsIn, session: SessionDep):
+    """Zeiten wählen. Die eigene Wahl geht vor der Freischaltung im Lernpfad."""
+    user = find_user(session, name)
+    user.tenses = ",".join(data.tenses) if data.tenses else None
+    session.commit()
+    return user_info(user)
 
 
 @app.get("/api/users/{name}/exercise")
@@ -185,8 +229,9 @@ def next_exercise(
         if last_verb and last_tense and last_person is not None
         else None
     )
+    tenses = [tense] if tense else selected_tenses(user)
     v, t, p = learning.choose_next(
-        states, ordered_verbs(), now_utc(), last, verb, tense
+        states, ordered_verbs(), now_utc(), last, verb, tenses
     )
     info = conjugation.get_verb(v)
     state = states.get((v, t, p))
@@ -194,7 +239,7 @@ def next_exercise(
         "verb": v,
         "meaning": info.meaning,
         "tense": t,
-        "tense_label": conjugation.TENSES[t],
+        "tense_label": conjugation.TENSES[t].label,
         "person": p,
         "pronoun": conjugation.PERSONS[p],
         "box": state.box if state else 0,
@@ -253,8 +298,13 @@ def submit_answer(name: str, data: AnswerIn, session: SessionDep):
     after_states = load_states(session, user)
     unlocked_before = learning.unlocked_tenses(before_states, verbs)
     unlocked_after = learning.unlocked_tenses(after_states, verbs)
-    active_before = learning.active_verb_count(before_states, verbs)
-    active_after = learning.active_verb_count(after_states, verbs)
+    chosen = selected_tenses(user)
+    active_before = learning.active_verb_count(
+        before_states, verbs, learning.practice_tenses(before_states, verbs, chosen)
+    )
+    active_after = learning.active_verb_count(
+        after_states, verbs, learning.practice_tenses(after_states, verbs, chosen)
+    )
     return {
         "status": result.status,
         "expected": result.expected,
@@ -269,7 +319,9 @@ def submit_answer(name: str, data: AnswerIn, session: SessionDep):
         "box_before": 0 if is_new else start.box,
         "box_after": after.box,
         "new_tenses": [
-            conjugation.TENSES[t] for t in unlocked_after if t not in unlocked_before
+            conjugation.TENSES[t].label
+            for t in unlocked_after
+            if t not in unlocked_before
         ],
         "new_verbs": verbs[active_before:active_after],
     }
@@ -279,7 +331,9 @@ def submit_answer(name: str, data: AnswerIn, session: SessionDep):
 def progress(name: str, session: SessionDep):
     """Lernfortschritt: Freischaltungen, Sicherheit pro Zeit, schwächste Verben."""
     user = find_user(session, name)
-    summary = learning.progress_summary(load_states(session, user), ordered_verbs())
+    summary = learning.progress_summary(
+        load_states(session, user), ordered_verbs(), selected_tenses(user)
+    )
     attempts = list(
         session.scalars(
             select(Attempt)
@@ -294,7 +348,9 @@ def progress(name: str, session: SessionDep):
     summary["recent"] = [
         {
             "verb": a.verb,
-            "tense": conjugation.TENSES.get(a.tense, a.tense),
+            "tense": conjugation.TENSES[a.tense].label
+            if a.tense in conjugation.TENSES
+            else a.tense,
             "pronoun": conjugation.PERSONS[a.person],
             "answer": a.answer,
             "status": a.status,

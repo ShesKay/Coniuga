@@ -61,7 +61,8 @@ createApp({
       answer: "",
       feedback: null,
       focusVerb: "",
-      focusTense: "",
+      tenses: [],
+      selectedTenses: null,
       accents: ["à", "è", "é", "ì", "ò", "ù"],
       lookupInput: "",
       lookupError: "",
@@ -71,10 +72,11 @@ createApp({
     };
   },
   async mounted() {
-    this.verbs = await api("/api/verbs");
+    [this.verbs, this.tenses] = await Promise.all([api("/api/verbs"), api("/api/tenses")]);
     if (this.user) {
       try {
-        await api("/api/users", { method: "POST", body: JSON.stringify({ name: this.user }) });
+        const data = await api("/api/users", { method: "POST", body: JSON.stringify({ name: this.user }) });
+        this.selectedTenses = data.tenses;
         this.nextExercise();
       } catch (e) {
         this.logout();
@@ -87,6 +89,7 @@ createApp({
       try {
         const data = await api("/api/users", { method: "POST", body: JSON.stringify({ name: this.nameInput }) });
         this.user = data.name;
+        this.selectedTenses = data.tenses;
         storage("coniuga-user", data.name);
         this.nextExercise();
       } catch (e) {
@@ -107,7 +110,6 @@ createApp({
     async nextExercise() {
       const params = new URLSearchParams();
       if (this.focusVerb) params.set("verb", this.focusVerb);
-      if (this.focusTense) params.set("tense", this.focusTense);
       if (this.exercise) {
         params.set("last_verb", this.exercise.verb);
         params.set("last_tense", this.exercise.tense);
@@ -126,6 +128,19 @@ createApp({
         method: "POST",
         body: JSON.stringify({ verb: e.verb, tense: e.tense, person: e.person, answer: this.answer }),
       });
+    },
+    async setTenses(list) {
+      const data = await api(`/api/users/${encodeURIComponent(this.user)}/settings`, {
+        method: "PUT",
+        body: JSON.stringify({ tenses: list }),
+      });
+      this.selectedTenses = data.tenses;
+      this.nextExercise();
+    },
+    toggleTense(key) {
+      const current = this.selectedTenses ? [...this.selectedTenses] : [];
+      const next = current.includes(key) ? current.filter((t) => t !== key) : [...current, key];
+      this.setTenses(next.length ? next : null);
     },
     addAccent(a) {
       this.answer += a;

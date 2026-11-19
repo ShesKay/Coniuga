@@ -33,15 +33,18 @@
 
     <!-- Üben -->
     <section v-if="tab === 'practice'">
-      <div class="focus">
+      <div class="card settings">
+        <div class="chips">
+          <span class="chips-label">Zeiten</span>
+          <button type="button" :class="['chip', {on: !selectedTenses}]" @click="setTenses(null)">Automatisch</button>
+          <button type="button" v-for="t in tenses" :key="t.key"
+                  :class="['chip', {on: selectedTenses && selectedTenses.includes(t.key)}]"
+                  @click="toggleTense(t.key)">{{ t.label }}</button>
+        </div>
+        <p class="muted small">{{ selectedTenses ? 'Du übst die gewählten Zeiten, auch wenn sie im Lernpfad noch gesperrt sind.' : 'Lernpfad: Die nächste Zeit wird frei, sobald die vorherige sitzt.' }}</p>
         <select v-model="focusVerb" @change="nextExercise">
-          <option value="">Alle Verben</option>
-          <option v-for="v in verbs" :key="v.infinitive" :value="v.infinitive">{{ v.infinitive }}</option>
-        </select>
-        <select v-model="focusTense" @change="nextExercise">
-          <option value="">Alle Zeiten</option>
-          <option value="presente">Presente</option>
-          <option value="passato_prossimo">Passato prossimo</option>
+          <option value="">Alle Verben (adaptiv)</option>
+          <option v-for="v in verbs" :key="v.infinitive" :value="v.infinitive">{{ v.infinitive }} · {{ v.meaning }}</option>
         </select>
       </div>
 
