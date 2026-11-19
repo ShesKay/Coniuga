@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import unicodedata
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
@@ -16,10 +17,6 @@ from pathlib import Path
 DATA_FILE = Path(__file__).parent / "data" / "verbs.json"
 
 PERSONS = ["io", "tu", "lui/lei", "noi", "voi", "loro"]
-TENSES = {
-    "presente": "Presente",
-    "passato_prossimo": "Passato prossimo",
-}
 
 _ENDINGS = {
     "are": ["o", "i", "a", "iamo", "ate", "ano"],
@@ -150,23 +147,72 @@ def passato_prossimo(verb: Verb) -> list[str]:
     return forms
 
 
+# ----------------------------------------------------------- Zeiten-Registry
+@dataclass(frozen=True)
+class Tense:
+    """Eine Zeit, die geübt und nachgeschlagen werden kann.
+
+    forms:    die sechs Anzeigeformen (io bis loro)
+    accepted: alle als richtig akzeptierten Antworten für eine Person
+    order:    Reihenfolge im Lernpfad (bestimmt die Freischaltung)
+    """
+
+    key: str
+    label: str
+    order: int
+    forms: Callable[[Verb], list[str]]
+    accepted: Callable[[Verb, int], list[str]] | None = None
+
+    def accepted_for(self, verb: Verb, person_index: int) -> list[str]:
+        if self.accepted:
+            return self.accepted(verb, person_index)
+        return [self.forms(verb)[person_index]]
+
+
+TENSES: dict[str, Tense] = {}
+
+
+def register(tense: Tense) -> Tense:
+    """Eine neue Zeit anmelden. Alle anderen Teile der App lesen nur TENSES."""
+    if tense.key in TENSES:
+        raise ValueError(f"Zeit doppelt registriert: {tense.key}")
+    TENSES[tense.key] = tense
+    return tense
+
+
+register(Tense("presente", "Presente", 1, presente))
+register(
+    Tense(
+        "passato_prossimo",
+        "Passato prossimo",
+        2,
+        passato_prossimo,
+        passato_prossimo_variants,
+    )
+)
+# Eine neue Zeit, z. B. das Imperfetto, braucht nur:
+#   1. eine Funktion, die aus einem Verb die sechs Formen bildet,
+#   2. register(Tense("imperfetto", "Imperfetto", 3, imperfetto)),
+#   3. Tests. Backend, Lernlogik und Frontend passen sich automatisch an.
+
+
+def tense_order() -> list[str]:
+    return [t.key for t in sorted(TENSES.values(), key=lambda t: t.order)]
+
+
+def get_tense(key: str) -> Tense:
+    if key not in TENSES:
+        raise ValueError(f"Unbekannte Zeit: {key}")
+    return TENSES[key]
+
+
 # ----------------------------------------------------------------- Öffentlich
 def conjugate(infinitive: str, tense: str) -> list[str]:
-    verb = get_verb(infinitive)
-    if tense == "presente":
-        return presente(verb)
-    if tense == "passato_prossimo":
-        return passato_prossimo(verb)
-    raise ValueError(f"Unbekannte Zeit: {tense}")
+    return get_tense(tense).forms(get_verb(infinitive))
 
 
 def accepted_answers(infinitive: str, tense: str, person_index: int) -> list[str]:
-    verb = get_verb(infinitive)
-    if tense == "presente":
-        return [presente(verb)[person_index]]
-    if tense == "passato_prossimo":
-        return passato_prossimo_variants(verb, person_index)
-    raise ValueError(f"Unbekannte Zeit: {tense}")
+    return get_tense(tense).accepted_for(get_verb(infinitive), person_index)
 
 
 def conjugation_table(infinitive: str) -> dict:
@@ -179,12 +225,12 @@ def conjugation_table(infinitive: str) -> dict:
         "irregular": bool(verb.presente or verb.participle),
         "tenses": {
             key: {
-                "label": label,
+                "label": TENSES[key].label,
                 "forms": dict(
                     zip(PERSONS, conjugate(verb.infinitive, key), strict=True)
                 ),
             }
-            for key, label in TENSES.items()
+            for key in tense_order()
         },
     }
 

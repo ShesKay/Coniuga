@@ -19,7 +19,7 @@ import random
 from dataclasses import dataclass, replace
 from datetime import datetime, timedelta
 
-from app.conjugation import PERSONS, TENSES
+from app.conjugation import PERSONS, TENSES, tense_order
 
 MAX_BOX = 5
 MASTERED_BOX = 3
@@ -35,7 +35,6 @@ STEP_VERBS = 4  # so viele kommen pro Stufe dazu
 UNLOCK_THRESHOLD = 0.8  # Anteil sicherer Items, der eine neue Stufe freischaltet
 # 0.8 statt tiefer: Sonst würden neue, noch ungeübte Verben die Quote
 # kaum senken und mehrere Stufen auf einmal freigeschaltet.
-TENSE_ORDER = list(TENSES)  # presente, passato_prossimo
 
 Key = tuple[str, str, int]  # (Verb, Zeit, Person)
 
@@ -65,43 +64,71 @@ def apply_result(state: ItemState, is_correct: bool, now: datetime) -> ItemState
     return replace(state, box=1, wrong=state.wrong + 1, due_at=now + INTERVALS[1])
 
 
-def mastery(states: dict[Key, ItemState], verbs: list[str], tense: str) -> float:
+def mastery(
+    states: dict[Key, ItemState], verbs: list[str], tenses: str | list[str]
+) -> float:
     """Anteil sicherer Items (Fach >= 3) über alle Personen dieser Verben."""
-    if not verbs:
+    tenses = [tenses] if isinstance(tenses, str) else tenses
+    if not verbs or not tenses:
         return 0.0
-    total = len(verbs) * len(PERSONS)
+    total = len(verbs) * len(tenses) * len(PERSONS)
     safe = sum(
         1
         for v in verbs
+        for t in tenses
         for p in range(len(PERSONS))
-        if (s := states.get((v, tense, p))) and s.box >= MASTERED_BOX
+        if (s := states.get((v, t, p))) and s.box >= MASTERED_BOX
     )
     return safe / total
-
-
-def active_verb_count(states: dict[Key, ItemState], ordered_verbs: list[str]) -> int:
-    """Wie viele Verben (nach Häufigkeit) aktuell geübt werden.
-
-    Start mit START_VERBS. Sobald im Presente genug davon sitzen, kommen
-    STEP_VERBS weitere dazu, und so weiter.
-    """
-    n = min(START_VERBS, len(ordered_verbs))
-    while (
-        n < len(ordered_verbs)
-        and mastery(states, ordered_verbs[:n], "presente") >= UNLOCK_THRESHOLD
-    ):
-        n = min(n + STEP_VERBS, len(ordered_verbs))
-    return n
 
 
 def unlocked_tenses(
     states: dict[Key, ItemState], ordered_verbs: list[str]
 ) -> list[str]:
-    """Der Passato prossimo wird frei, sobald die ersten Verben im Presente sitzen."""
+    """Lernpfad: Eine Zeit wird frei, sobald die vorherige bei den ersten
+    Verben sitzt. Funktioniert für beliebig viele registrierte Zeiten."""
+    order = tense_order()
     first = ordered_verbs[:START_VERBS]
-    if mastery(states, first, "presente") >= UNLOCK_THRESHOLD:
-        return TENSE_ORDER
-    return TENSE_ORDER[:1]
+    unlocked = order[:1]
+    for previous, following in zip(order, order[1:], strict=False):
+        if mastery(states, first, previous) < UNLOCK_THRESHOLD:
+            break
+        unlocked.append(following)
+    return unlocked
+
+
+def practice_tenses(
+    states: dict[Key, ItemState],
+    ordered_verbs: list[str],
+    selected: list[str] | None = None,
+) -> list[str]:
+    """Welche Zeiten geübt werden: die eigene Auswahl geht vor, sonst der
+    Lernpfad (freigeschaltete Zeiten)."""
+    if selected:
+        return [t for t in tense_order() if t in selected]
+    return unlocked_tenses(states, ordered_verbs)
+
+
+def active_verb_count(
+    states: dict[Key, ItemState],
+    ordered_verbs: list[str],
+    tenses: list[str] | None = None,
+) -> int:
+    """Wie viele Verben (nach Häufigkeit) aktuell geübt werden.
+
+    Start mit START_VERBS. Sobald genug davon sitzen, kommen STEP_VERBS
+    weitere dazu, und so weiter. Gemessen wird in der grundlegendsten der
+    geübten Zeiten (im Lernpfad das Presente), damit eine neu freigeschaltete
+    Zeit die Zahl der Verben nicht wieder senkt.
+    """
+    base = (tenses or tense_order())[0]
+    n = min(START_VERBS, len(ordered_verbs))
+    while (
+        n < len(ordered_verbs)
+        and mastery(states, ordered_verbs[:n], base) >= UNLOCK_THRESHOLD
+    ):
+        n = min(n + STEP_VERBS, len(ordered_verbs))
+    return n
 
 
 def choose_next(
@@ -110,7 +137,7 @@ def choose_next(
     now: datetime,
     last_key: Key | None = None,
     focus_verb: str | None = None,
-    focus_tense: str | None = None,
+    tenses: list[str] | None = None,
     rng: random.Random | None = None,
 ) -> Key:
     """Wählt die nächste Aufgabe.
@@ -119,14 +146,15 @@ def choose_next(
      1. fällige Items, die schwächsten (tiefstes Fach) und ältesten zuerst
      2. neue, noch nie gesehene Items der aktiven Verben
      3. falls alles erledigt ist: das Item, das als nächstes fällig wird
-    Mit ``focus_verb`` oder ``focus_tense`` wird gezielt eingeschränkt.
+    ``tenses`` ist die eigene Auswahl (sonst Lernpfad), ``focus_verb``
+    schränkt auf ein Verb ein.
     """
     rng = rng or random.Random()
+    tenses = practice_tenses(states, ordered_verbs, tenses)
     if focus_verb:
         verbs = [focus_verb]
     else:
-        verbs = ordered_verbs[: active_verb_count(states, ordered_verbs)]
-    tenses = [focus_tense] if focus_tense else unlocked_tenses(states, ordered_verbs)
+        verbs = ordered_verbs[: active_verb_count(states, ordered_verbs, tenses)]
     candidates = [(v, t, p) for v in verbs for t in tenses for p in range(len(PERSONS))]
     if len(candidates) > 1 and last_key in candidates:
         candidates.remove(last_key)
@@ -145,16 +173,21 @@ def choose_next(
     return min(seen, key=lambda s: s.due_at or now).key
 
 
-def progress_summary(states: dict[Key, ItemState], ordered_verbs: list[str]) -> dict:
-    n = active_verb_count(states, ordered_verbs)
+def progress_summary(
+    states: dict[Key, ItemState],
+    ordered_verbs: list[str],
+    selected: list[str] | None = None,
+) -> dict:
+    tenses = practice_tenses(states, ordered_verbs, selected)
+    n = active_verb_count(states, ordered_verbs, tenses)
     active = ordered_verbs[:n]
     per_tense = {
         t: {
-            "label": TENSES[t],
+            "label": TENSES[t].label,
             "mastery": round(mastery(states, active, t), 3),
             "seen": sum(1 for k in states if k[1] == t),
         }
-        for t in TENSE_ORDER
+        for t in tense_order()
     }
     boxes = {b: 0 for b in range(1, MAX_BOX + 1)}
     for s in states.values():
@@ -172,6 +205,8 @@ def progress_summary(states: dict[Key, ItemState], ordered_verbs: list[str]) -> 
         "active_count": n,
         "total_verbs": len(ordered_verbs),
         "unlocked_tenses": unlocked_tenses(states, ordered_verbs),
+        "practice_tenses": tenses,
+        "selected_tenses": selected,
         "tenses": per_tense,
         "boxes": boxes,
         "weakest": [{"verb": v, "correct": c, "wrong": w} for v, c, w in weakest],

@@ -119,3 +119,22 @@ class TestCheckAnswer:
             check_answer("vedere", "passato_prossimo", 0, "ho veduto").status
             == "correct"
         )
+
+
+def test_registry_order_and_labels():
+    from app.conjugation import TENSES, tense_order
+
+    assert tense_order() == ["presente", "passato_prossimo"]
+    assert TENSES["passato_prossimo"].label == "Passato prossimo"
+
+
+def test_registering_a_tense_twice_fails():
+    from app.conjugation import TENSES, register
+
+    with pytest.raises(ValueError):
+        register(TENSES["presente"])
+
+
+def test_unknown_tense_raises():
+    with pytest.raises(ValueError):
+        conjugate("parlare", "futuro")

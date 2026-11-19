@@ -68,9 +68,7 @@ def test_new_items_when_nothing_is_due():
 
 
 def test_focus_on_one_verb_and_tense():
-    key = choose_next(
-        {}, VERBS, NOW, focus_verb="verb15", focus_tense="passato_prossimo"
-    )
+    key = choose_next({}, VERBS, NOW, focus_verb="verb15", tenses=["passato_prossimo"])
     assert key[:2] == ("verb15", "passato_prossimo")
 
 
@@ -91,3 +89,44 @@ def test_progress_summary():
     assert summary["active_count"] == 12
     assert summary["tenses"]["presente"]["mastery"] > 0
     assert summary["boxes"][3] == 48
+
+
+def test_own_selection_overrides_learning_path():
+    # Nichts gelernt, Passato prossimo also noch gesperrt, aber gewählt
+    key = choose_next({}, VERBS, NOW, tenses=["passato_prossimo"])
+    assert key[1] == "passato_prossimo"
+    assert learning.practice_tenses({}, VERBS, ["passato_prossimo"]) == [
+        "passato_prossimo"
+    ]
+
+
+def test_without_selection_the_learning_path_applies():
+    assert learning.practice_tenses({}, VERBS, None) == ["presente"]
+
+
+def test_selection_follows_registry_order():
+    order = learning.practice_tenses({}, VERBS, ["passato_prossimo", "presente"])
+    assert order == ["presente", "passato_prossimo"]
+
+
+def test_verb_expansion_is_measured_in_base_tense_of_selection():
+    states = mastered(VERBS[:8], tense="passato_prossimo")
+    assert learning.active_verb_count(states, VERBS, ["passato_prossimo"]) == 12
+    assert learning.active_verb_count(states, VERBS, ["presente"]) == 8
+
+
+def test_new_tense_is_unlocked_generically(monkeypatch):
+    from app import conjugation
+
+    extra = conjugation.Tense("demo", "Demo", 3, conjugation.presente)
+    monkeypatch.setitem(conjugation.TENSES, "demo", extra)
+    states = {**mastered(VERBS[:8]), **mastered(VERBS[:8], "passato_prossimo")}
+    assert learning.unlocked_tenses(states, VERBS) == [
+        "presente",
+        "passato_prossimo",
+        "demo",
+    ]
+    assert learning.unlocked_tenses(mastered(VERBS[:8]), VERBS) == [
+        "presente",
+        "passato_prossimo",
+    ]
