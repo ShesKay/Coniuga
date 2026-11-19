@@ -1,12 +1,163 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="de">
 <head>
-    <meta charset="utf8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Coniuga – Italienische Verben aktiv üben</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 </head>
-
 <body>
-    <h1>Hello from the frontend</h1>
-</body>
+<div id="app" v-cloak>
+  <header>
+    <h1>Coniuga</h1>
+    <span v-if="user" class="user">{{ user }} · <a href="#" @click.prevent="logout">wechseln</a></span>
+  </header>
 
+  <!-- Anmeldung: nur Name, kein Passwort -->
+  <section v-if="!user" class="card">
+    <h2>Wie heisst du?</h2>
+    <p class="muted">Dein Name speichert deinen Lernstand. Ein Passwort gibt es nicht.</p>
+    <form @submit.prevent="login">
+      <input v-model="nameInput" placeholder="Name" autocomplete="nickname" maxlength="30" required>
+      <button type="submit">Los geht's</button>
+    </form>
+    <p v-if="error" class="error">{{ error }}</p>
+  </section>
+
+  <template v-else>
+    <nav>
+      <button v-for="t in tabs" :key="t.id" :class="{active: tab === t.id}" @click="openTab(t.id)">{{ t.label }}</button>
+    </nav>
+
+    <!-- Üben -->
+    <section v-if="tab === 'practice'">
+      <div class="focus">
+        <select v-model="focusVerb" @change="nextExercise">
+          <option value="">Alle Verben</option>
+          <option v-for="v in verbs" :key="v.infinitive" :value="v.infinitive">{{ v.infinitive }}</option>
+        </select>
+        <select v-model="focusTense" @change="nextExercise">
+          <option value="">Alle Zeiten</option>
+          <option value="presente">Presente</option>
+          <option value="passato_prossimo">Passato prossimo</option>
+        </select>
+      </div>
+
+      <div v-if="exercise" class="card exercise">
+        <div class="meta">
+          <span class="tense">{{ exercise.tense_label }}</span>
+          <span v-if="exercise.new" class="badge">neu</span>
+          <span v-else class="badge">Fach {{ exercise.box }}</span>
+        </div>
+        <div class="prompt">
+          <span class="pronoun">{{ exercise.pronoun }}</span>
+          <span class="verb">{{ exercise.verb }}</span>
+        </div>
+        <div class="muted">{{ exercise.meaning }}</div>
+
+        <form @submit.prevent="feedback ? nextExercise() : submit()">
+          <input ref="answerInput" v-model="answer" :disabled="!!feedback" placeholder="Form eintippen"
+                 autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+          <div class="accents" v-if="!feedback">
+            <button type="button" v-for="a in accents" :key="a" @click="addAccent(a)">{{ a }}</button>
+          </div>
+          <button type="submit">{{ feedback ? 'Weiter' : 'Prüfen' }}</button>
+        </form>
+
+        <div v-if="feedback" :class="['feedback', feedback.status]">
+          <strong v-if="feedback.status === 'correct'">Richtig!</strong>
+          <strong v-else-if="feedback.status === 'accent'">Fast: Achte auf den Akzent.</strong>
+          <strong v-else>Leider falsch.</strong>
+          <div>Richtig: <b>{{ feedback.expected }}</b></div>
+          <div class="muted">Fach {{ feedback.box_before || 'neu' }} → {{ feedback.box_after }}</div>
+          <p v-for="t in feedback.new_tenses" :key="t" class="unlock">Neu freigeschaltet: {{ t }}</p>
+          <p v-if="feedback.new_verbs.length" class="unlock">Neue Verben: {{ feedback.new_verbs.join(', ') }}</p>
+          <table class="row">
+            <tr v-for="(form, pronoun) in feedback.row" :key="pronoun" :class="{hl: pronoun === exercise.pronoun}">
+              <td>{{ pronoun }}</td><td>{{ form }}</td>
+            </tr>
+          </table>
+          <button class="link" @click="loadExamples(exercise.verb, exercise.tense, exercise.person)">Beispielsätze anzeigen</button>
+          <examples-list :data="examples"></examples-list>
+        </div>
+      </div>
+    </section>
+
+    <!-- Nachschlagen -->
+    <section v-if="tab === 'lookup'">
+      <form class="card" @submit.prevent="lookup(lookupInput)">
+        <input v-model="lookupInput" list="verblist" placeholder="Verb, z. B. andare" autocapitalize="off">
+        <datalist id="verblist"><option v-for="v in verbs" :key="v.infinitive" :value="v.infinitive"></option></datalist>
+        <button type="submit">Nachschlagen</button>
+        <p v-if="lookupError" class="error">{{ lookupError }}</p>
+      </form>
+      <div v-if="table" class="card">
+        <h2>{{ table.infinitive }} <span class="muted">· {{ table.meaning }}</span></h2>
+        <p class="muted">Hilfsverb: {{ table.auxiliary }} · Partizip: {{ table.participle }}
+          <span v-if="table.irregular" class="badge">unregelmässig</span></p>
+        <div class="tables">
+          <div v-for="(t, key) in table.tenses" :key="key">
+            <h3>{{ t.label }}</h3>
+            <table class="row"><tr v-for="(form, p) in t.forms" :key="p"><td>{{ p }}</td><td>{{ form }}</td></tr></table>
+          </div>
+        </div>
+        <button @click="practiceVerb(table.infinitive)">Dieses Verb üben</button>
+        <button class="link" @click="loadExamples(table.infinitive, 'presente', 0)">Beispielsätze anzeigen</button>
+        <examples-list :data="examples"></examples-list>
+      </div>
+    </section>
+
+    <!-- Fortschritt -->
+    <section v-if="tab === 'progress' && progress">
+      <div class="card stats">
+        <div><b>{{ progress.attempts }}</b><span>Antworten</span></div>
+        <div><b>{{ progress.accuracy === null ? '–' : Math.round(progress.accuracy * 100) + ' %' }}</b><span>Trefferquote</span></div>
+        <div><b>{{ progress.active_count }}/{{ progress.total_verbs }}</b><span>Verben aktiv</span></div>
+        <div><b>{{ progress.practice_days }}</b><span>Übungstage</span></div>
+      </div>
+      <div class="card">
+        <h3>Sicherheit pro Zeit</h3>
+        <div v-for="(t, key) in progress.tenses" :key="key" class="bar-row">
+          <span>{{ t.label }}<span v-if="!progress.unlocked_tenses.includes(key)" class="muted"> (gesperrt)</span></span>
+          <div class="bar"><div :style="{width: (t.mastery * 100) + '%'}"></div></div>
+          <span>{{ Math.round(t.mastery * 100) }} %</span>
+        </div>
+        <p class="muted">Anteil der aktiven Formen, die mindestens in Fach 3 liegen. Ab 80 % kommen neue Verben bzw. die nächste Zeit dazu.</p>
+      </div>
+      <div class="card">
+        <h3>Karteikasten</h3>
+        <div class="boxes">
+          <div v-for="(n, box) in progress.boxes" :key="box"><b>{{ n }}</b><span>Fach {{ box }}</span></div>
+        </div>
+      </div>
+      <div class="card" v-if="progress.weakest.length">
+        <h3>Macht dir am meisten Mühe</h3>
+        <ul class="plain">
+          <li v-for="w in progress.weakest" :key="w.verb">
+            <a href="#" @click.prevent="practiceVerb(w.verb)">{{ w.verb }}</a>
+            <span class="muted"> · {{ w.wrong }} falsch, {{ w.correct }} richtig</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card" v-if="progress.recent.length">
+        <h3>Letzte Antworten</h3>
+        <ul class="plain">
+          <li v-for="(r, i) in progress.recent" :key="i" :class="r.status">
+            {{ r.verb }} · {{ r.pronoun }} · {{ r.tense }}: <b>{{ r.answer || '(leer)' }}</b>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Aktive Verben</h3>
+        <p>{{ progress.active_verbs.join(', ') }}</p>
+      </div>
+    </section>
+  </template>
+
+  <footer>Beispielsätze: <a href="https://tatoeba.org" target="_blank" rel="noopener">Tatoeba</a>, CC BY 2.0 FR</footer>
+</div>
+<script src="/static/app.js"></script>
+</body>
 </html>
