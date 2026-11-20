@@ -28,3 +28,5 @@ Empfehlung der Dozierenden, kein Build-Schritt, Zustand und Darstellung sauber g
 ## Consequences
 
 Die App braucht beim Laden Zugriff auf das CDN (unpkg). Der Code liegt in drei Dateien (index.html, app.js, style.css) in src/app/static und wird vom Backend ausgeliefert.
+
+Die Vue-Version ist fest auf 3.5.46 gesetzt (nicht `vue@3`). Ohne feste Version leitet unpkg bei jedem Seitenaufruf auf die jeweils neueste 3er-Version weiter. Eine neue Vue-Version käme so ungetestet zu allen Benutzern. Mit fester Version entfällt die Weiterleitung, und der Browser nimmt die Datei direkt aus dem Cache. Ein Update ist eine bewusste Änderung dieser einen Zeile in index.html.
