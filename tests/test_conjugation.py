@@ -4,6 +4,7 @@ from app.conjugation import (
     check_answer,
     conjugate,
     conjugation_table,
+    find_verbs,
     get_verb,
     load_verbs,
     participle,
@@ -138,3 +139,33 @@ def test_registering_a_tense_twice_fails():
 def test_unknown_tense_raises():
     with pytest.raises(ValueError):
         conjugate("parlare", "futuro")
+
+
+def names(query):
+    return [v.infinitive for v in find_verbs(query)]
+
+
+def test_find_verbs_italian_and_german():
+    assert names("andare") == ["andare"]
+    assert names("  Andare ") == ["andare"]
+    assert names("gehen") == ["andare"]
+    assert names("GEHEN") == ["andare"]
+
+
+def test_find_verbs_german_word_with_several_verbs():
+    # «bleiben» passt zu drei Verben, sortiert nach Lernpfad
+    assert names("bleiben") == ["stare", "rimanere", "restare"]
+    assert names("lernen") == ["studiare", "imparare"]
+
+
+def test_find_verbs_parts_and_reflexive():
+    assert names("anrufen") == ["chiamare"]
+    assert names("befinden") == ["stare"]
+    assert names("sich befinden") == ["stare"]
+
+
+def test_find_verbs_no_partial_match():
+    # «gehen» darf nicht «hinausgehen» finden, «geh» nichts
+    assert names("geh") == []
+    assert names("kochen") == []
+    assert names("") == []
