@@ -6,6 +6,8 @@ Date: 2026-11-21
 
 Accepted (Umsetzung nach der Abgabe; ersetzt Teile von 0009)
 
+Nachtrag 21.11.2026: Aus Punkt 9 ist das Üben nach Fach vorgezogen (Anforderung F13): Fächer 1 bis 5 einzeln wählbar, neue Formen zählen als Fach 1, Hinweis statt Aufgabe, wenn die Auswahl leer ist. Es gelten noch die Fächer und Regeln aus 0009; Fach-Namen, Anzahl pro Fach und der Satz «Du übst: …» folgen mit der übrigen Umsetzung.
+
 ## Context
 
 Beim Üben am Handy (21.11.2026) sind drei Schwächen der Lernlogik aus 0009 aufgefallen:

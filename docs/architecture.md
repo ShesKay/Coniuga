@@ -74,7 +74,7 @@ erDiagram
 | GET | `/api/verbs/{verb}/examples?tense=&person=` | Beispielsätze (Tatoeba) |
 | POST | `/api/users` | anmelden bzw. anlegen (nur Name) |
 | PUT | `/api/users/{name}/settings` | Zeiten wählen (`{"tenses": [...]}`, leer = automatisch) |
-| GET | `/api/users/{name}/exercise` | nächste Aufgabe, optional `verb`, `tense` |
+| GET | `/api/users/{name}/exercise` | nächste Aufgabe, optional `verb`, `tense` und `box` (mehrfach möglich, z. B. `?box=1&box=3`); liegt in den Fächern nichts: `{"empty": true}` |
 | POST | `/api/users/{name}/answers` | Antwort prüfen und Lernstand speichern (Üben) |
 | GET | `/api/users/{name}/progress` | Fortschritt |
 
@@ -130,6 +130,7 @@ sequenceDiagram
 | 0012 | Schichten: Fachlogik ohne Framework und Datenbank |
 | 0013 | Antwortprüfung mit gezielten Toleranzen |
 | 0014 | Verbdaten als JSON statt in der Datenbank |
+| 0015 | Lernlogik überarbeitet: Langzeit statt Kurzzeit, dosiert statt Blöcke (Umsetzung nach der Abgabe; Üben nach Fach vorgezogen) |
 
 Details in `docs/decisions/`, Herausforderungen und ihre Lösungen in
 `docs/challenges.md`.

@@ -17,6 +17,7 @@ Projekt im Modul SWEN (HSLU, HS2026).
 | --- | --- |
 | **Üben** (Kernoperation 1) | Aufgabe wie «noi · andare · Passato prossimo», Antwort eintippen, sofortiges Feedback mit ganzer Konjugationszeile. Fehlende Akzente gelten als «fast richtig». |
 | **Nachschlagen** (Kernoperation 2) | Vollständige Tabelle für Presente und Passato prossimo inkl. Hilfsverb und Partizip, mit Knopf «Dieses Verb üben». Suche auf Italienisch oder Deutsch («gehen» findet andare), mit Vorschlagsliste beim Tippen. |
+| **Fächerwahl** | Gezielt nur bestimmte Fächer des Karteikastens üben, z. B. nur 1 bis 3. Neue Formen zählen als Fach 1; liegt in der Auswahl nichts, erscheint ein Hinweis. |
 | **Zeitenwahl** | Automatisch (Lernpfad schaltet die nächste Zeit frei) oder eigene Auswahl, z. B. nur Passato prossimo. Die Wahl wird pro Benutzer gespeichert. |
 | **Fortschritt** | Sicherheit pro Zeit, Karteikasten-Fächer, Trefferquote, Übungstage, schwächste Verben, letzte Antworten. |
 | **Beispielsätze** | Echte italienische Sätze mit deutscher Übersetzung von [Tatoeba](https://tatoeba.org) (externer Webdienst). |
@@ -57,6 +58,8 @@ uv run ruff format src tests
 Die Tests laufen gegen eine eigene SQLite-Datenbank und rufen den externen
 Dienst nicht auf. GitHub Actions führt Linter, Formatprüfung, Tests und einen
 Docker-Build mit Health-Check bei jedem Push aus (`.github/workflows/ci.yml`).
+70 Tests, 96 % Abdeckung; jeder Test ist in `docs/testing.md` mit seinem Zweck
+beschrieben.
 
 ## Local deployment
 
@@ -109,7 +112,8 @@ Weitere Dokumentation:
 
 * `docs/requirements.md`: Anforderungen und Abgrenzung
 * `docs/architecture.md`: Architektur, Datenmodell, Schnittstelle
-* `docs/decisions/`: 14 Entscheide (Decision Records), Übersicht in `docs/architecture.md`
+* `docs/decisions/`: 15 Entscheide (Decision Records), Übersicht in `docs/architecture.md`
+* `docs/testing.md`: alle Tests mit Zweck, Zuordnung zu den Anforderungen, Abdeckung
 * `docs/challenges.md`: Herausforderungen und wie sie gelöst wurden
 * `docs/extending.md`: neue Zeit oder neues Verb hinzufügen
 

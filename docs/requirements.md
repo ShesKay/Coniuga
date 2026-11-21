@@ -16,6 +16,24 @@ Coniuga soll
 
 Lernende auf Niveau A1 bis B1, die unterwegs auf dem Handy üben.
 
+## Fachbegriffe
+
+* **Form** (auch Item): eine Aufgabe aus Verb, Zeit und Person, z. B.
+  *andare*, Presente, *noi*. Der Lernstand wird pro Form gespeichert.
+* **Fach:** Stufe im Karteikasten (Leitner), 1 bis 5. Jedes Fach hat eine
+  Wartezeit, bis die Form wieder kommt: 1 Minute, 10 Minuten, 1 Tag, 3 Tage,
+  7 Tage. Richtig: ein Fach höher. Falsch: zurück in Fach 1.
+* **Fällig:** Die Wartezeit einer Form ist abgelaufen.
+* **Sitzt:** Eine Form liegt in Fach 3 oder höher.
+* **Aktive Verben:** die Verben, die zurzeit geübt werden. Die Reihenfolge
+  richtet sich nach der Häufigkeit (`data/verbs.json`).
+* **Freischaltung:** Neue Verben und Zeiten kommen dazu, sobald 80 % der
+  Formen sitzen (Entscheid 0009, Korrektur der Kaskade in `challenges.md`,
+  Nr. 1).
+* **Lernpfad:** die automatische Reihenfolge der Zeiten (zuerst Presente,
+  dann Passato prossimo). Eine eigene Zeitenwahl geht vor (Entscheid 0011).
+* **Kernoperation:** die zwei Hauptfunktionen der App, Üben und Nachschlagen.
+
 ## Funktionale Anforderungen
 
 | ID | Anforderung | Priorität |
@@ -41,6 +59,8 @@ Lernende auf Niveau A1 bis B1, die unterwegs auf dem Handy üben.
 * Fällt der externe Dienst aus, funktioniert der Rest der App weiter.
 * Konjugationen fachlich korrekt (geprüft gegen eine Referenz).
 * Kern-Logik ohne Web-Framework testbar; Tests laufen automatisch in der CI.
+
+Welche Tests welche Anforderung abdecken, steht in `docs/testing.md`.
 
 ## Abgrenzung (nicht Teil dieser Version)
 
