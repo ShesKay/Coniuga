@@ -71,7 +71,7 @@ Die Agent-Anleitungen, die Neon danach anbietet («Set up Neon with your coding 
 * In der App: SQLAlchemy führt einen eigenen Pool. `create_engine` in `src/app/db.py` legt ihn automatisch an. Mit `pool_pre_ping=True` prüft die App vor jeder Nutzung kurz, ob die Verbindung noch lebt; das ist wichtig, weil Neon die Datenbank im Gratisplan nach einer Pause schlafen legt.
 * Bei Neon (Schalter «Connection pooling»): Ein Vermittler namens PgBouncer steht zwischen App und Datenbank und teilt wenige echte Verbindungen auf sehr viele Anfragen auf. Erkennbar ist er an `-pooler` in der Adresse.
 
-**Entscheid: Pooling bei Neon ausgeschaltet.** Coniuga läuft als einzelner Container und öffnet höchstens ein paar Verbindungen. Der Pool in der App reicht dafür; ein zweiter Pool bei Neon bringt keinen Nutzen, ist aber ein zusätzlicher Teil, der verstanden und erklärt werden muss. Neons Vermittler lohnt sich, wenn sehr viele Programme gleichzeitig zugreifen.
+**Entscheid: Pooling bei Neon ausgeschaltet.** Coniuga läuft als einzelner Container und öffnet höchstens ein paar Verbindungen. Neon erlaubt im Gratisplan 894 direkte Verbindungen (Anzeige unter «Computes»), also weit mehr als nötig. Der Pool in der App reicht dafür; ein zweiter Pool bei Neon bringt keinen Nutzen, ist aber ein zusätzlicher Teil, der verstanden und erklärt werden muss. Neons Vermittler lohnt sich, wenn sehr viele Programme gleichzeitig zugreifen.
 
 **Geprüfte Bedenken.** Bei einem Vermittler wie PgBouncer gab es früher ein bekanntes Problem: Treiber wie psycopg bereiten häufig wiederholte Abfragen bei der Datenbank vor («prepared statements»), damit sie schneller laufen. Teilt der Vermittler die Verbindungen neu auf, findet die Datenbank eine solche vorbereitete Abfrage nicht mehr, und es erscheint ein Fehler wie «prepared statement does not exist». Laut den Dokumentationen von Neon und psycopg ist das heute gelöst: Neon unterstützt diese vorbereiteten Abfragen auch mit Pooling, und psycopg ab Version 3.2 ebenfalls (Coniuga verlangt mindestens 3.2). Dieses Risiko ist also kein Grund für den Entscheid mehr; ohne Pooling stellt sich die Frage aber gar nicht erst.
 
@@ -84,6 +84,8 @@ Ohne Angabe startet Render einen Dienst in Oregon (USA), und jede Abfrage an die
 ## Consequences
 
 Der Gratisplan von Render legt die App nach Inaktivität schlafen; der erste Aufruf dauert dann rund eine Minute.
+
+Auch die Datenbank schläft: Der «Compute» bei Neon ist der Rechner, auf dem die Datenbank läuft (die Daten selbst liegen getrennt davon im Speicher von Neon und gehen dabei nicht verloren). Im Gratisplan passt Neon seine Grösse automatisch zwischen 0.25 und 2 Compute Units an (etwa 1 bis 8 GB Arbeitsspeicher) und schaltet ihn nach 5 Minuten ohne Anfrage ab («Scale to zero», im Dashboard als «Suspended» angezeigt). Die erste Anfrage danach weckt ihn wieder und dauert etwas länger. Diese Einstellungen bleiben auf dem Standard; ändern liesse sich «Scale to zero» nur in einem bezahlten Plan. Weil die Datenbank zwischendurch abgeschaltet wird, prüft die App mit `pool_pre_ping=True` vor jeder Nutzung, ob eine Verbindung noch lebt (siehe Schritt 2).
 
 Die Verbindungsadresse von Neon enthält das Passwort. Sie wird nur bei Render als `DATABASE_URL` hinterlegt, nie im Repo, in einer Mail oder in einem Chat.
 

@@ -168,3 +168,12 @@ def test_search_verbs_endpoint(client):
     assert len(client.get("/api/verbs/search?q=bleiben").json()) == 3
     assert client.get("/api/verbs/search?q=kochen").json() == []
     assert client.get("/api/verbs/search?q=").status_code == 422
+
+
+def test_exercise_box_filter(client):
+    login(client)
+    assert client.get("/api/users/Kay/exercise", params={"box": 1}).json()["new"]
+    assert client.get("/api/users/Kay/exercise", params={"box": 5}).json() == {
+        "empty": True
+    }
+    assert client.get("/api/users/Kay/exercise", params={"box": 9}).status_code == 422
