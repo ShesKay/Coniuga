@@ -91,10 +91,21 @@
     <!-- Nachschlagen -->
     <section v-if="tab === 'lookup'">
       <form class="card" @submit.prevent="lookup(lookupInput)">
-        <input v-model="lookupInput" list="verblist" placeholder="Verb, z. B. andare" autocapitalize="off">
-        <datalist id="verblist"><option v-for="v in verbs" :key="v.infinitive" :value="v.infinitive"></option></datalist>
+      <input v-model="lookupInput" @focus="suggestOpen = true" @input="suggestOpen = true" placeholder="Italienisch oder Deutsch, z. B. andare oder gehen"
+               autocapitalize="off" autocomplete="off" spellcheck="false">
+      <ul v-if="suggestOpen && suggestions.length" class="suggestions">
+          <li v-for="v in suggestions" :key="v.infinitive">
+            <button type="button" @click="pickSuggestion(v.infinitive)">{{ v.infinitive }} <span class="muted">· {{ v.meaning }}</span></button>
+          </li>
+        </ul>
         <button type="submit">Nachschlagen</button>
         <p v-if="lookupError" class="error">{{ lookupError }}</p>
+                <div v-if="lookupChoices.length" class="choices">
+          <p class="muted small">«{{ lookupInput.trim() }}» passt zu mehreren Verben. Welches meinst du?</p>
+          <button type="button" v-for="c in lookupChoices" :key="c.infinitive" class="chip" @click="showTable(c.infinitive)">
+            {{ c.infinitive }} · {{ c.meaning }}
+          </button>
+        </div>
       </form>
       <div v-if="table" class="card">
         <h2>{{ table.infinitive }} <span class="muted">· {{ table.meaning }}</span></h2>

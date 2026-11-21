@@ -14,7 +14,7 @@ Projekt im Modul SWEN (HSLU, HS2026).
 | Funktion | Beschreibung |
 | --- | --- |
 | **Üben** (Kernoperation 1) | Aufgabe wie «noi · andare · Passato prossimo», Antwort eintippen, sofortiges Feedback mit ganzer Konjugationszeile. Fehlende Akzente gelten als «fast richtig». |
-| **Nachschlagen** (Kernoperation 2) | Vollständige Tabelle für Presente und Passato prossimo inkl. Hilfsverb und Partizip, mit Knopf «Dieses Verb üben». |
+| **Nachschlagen** (Kernoperation 2) | Vollständige Tabelle für Presente und Passato prossimo inkl. Hilfsverb und Partizip, mit Knopf «Dieses Verb üben». Suche auf Italienisch oder Deutsch («gehen» findet andare), mit Vorschlagsliste beim Tippen. |
 | **Zeitenwahl** | Automatisch (Lernpfad schaltet die nächste Zeit frei) oder eigene Auswahl, z. B. nur Passato prossimo. Die Wahl wird pro Benutzer gespeichert. |
 | **Fortschritt** | Sicherheit pro Zeit, Karteikasten-Fächer, Trefferquote, Übungstage, schwächste Verben, letzte Antworten. |
 | **Beispielsätze** | Echte italienische Sätze mit deutscher Übersetzung von [Tatoeba](https://tatoeba.org) (externer Webdienst). |

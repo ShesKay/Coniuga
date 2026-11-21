@@ -31,6 +31,7 @@ Lernende auf Niveau A1 bis B1, die unterwegs auf dem Handy üben.
 | F9 | Gezielt ein Verb oder eine Zeit üben. | Soll |
 | F10 | Echte Beispielsätze zur geübten Form (externer Webdienst). | Soll |
 | F11 | Weitere Zeiten (Imperfetto, Futuro, Condizionale, Congiuntivo). | Kann (spätere Version) |
+| F12 | **Nachschlagen auf Deutsch:** Verben auch über die deutsche Bedeutung finden («gehen» → andare), Auswahl bei mehreren Treffern, Vorschlagsliste beim Tippen, am Handy bedienbar. | Soll |
 
 ## Nichtfunktionale Anforderungen
 
