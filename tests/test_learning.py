@@ -130,3 +130,11 @@ def test_new_tense_is_unlocked_generically(monkeypatch):
         "presente",
         "passato_prossimo",
     ]
+
+
+def test_no_cascade_when_new_block_is_not_practised():
+    # 16 Verben sitzen, 4 neue kommen dazu und sind noch ungeübt.
+    # 16 von 20 sind genau 80 %; trotzdem dürfen nicht gleich 24 aktiv werden.
+    verbs = [f"verb{i}" for i in range(30)]
+    states = mastered(verbs[:16])
+    assert learning.active_verb_count(states, verbs) == 20
