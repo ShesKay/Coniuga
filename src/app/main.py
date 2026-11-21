@@ -166,6 +166,16 @@ def list_verbs():
     ]
 
 
+@app.get("/api/verbs/search")
+def search_verbs(q: str = Query(..., min_length=1, max_length=40)):
+    """Nachschlagen auf Italienisch oder Deutsch; kann mehrere Treffer liefern.
+    Muss vor /api/verbs/{infinitive} stehen, sonst gälte «search» als Verb."""
+    return [
+        {"infinitive": v.infinitive, "meaning": v.meaning}
+        for v in conjugation.find_verbs(q)
+    ]
+
+
 @app.get("/api/verbs/{infinitive}")
 def verb_table(infinitive: str):
     """Kernoperation Nachschlagen: vollständige Konjugationstabelle."""
