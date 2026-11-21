@@ -90,6 +90,35 @@ def get_verb(infinitive: str) -> Verb:
     return verbs[key]
 
 
+def _german_words(meaning: str) -> set[str]:
+    """«sich befinden, bleiben» -> {"sich befinden", "befinden", "bleiben"}."""
+    words = set()
+    for part in meaning.lower().split(","):
+        part = part.strip()
+        if part:
+            words.add(part)
+            if part.startswith("sich "):
+                words.add(part[len("sich ") :])
+    return words
+
+
+def find_verbs(query: str) -> list[Verb]:
+    """Nachschlagen auf Italienisch oder Deutsch.
+
+    Zuerst als italienischer Infinitiv, sonst in den deutschen Bedeutungen.
+    Ein deutsches Wort kann zu mehreren Verben passen («bleiben»), darum
+    eine Liste, sortiert nach der Reihenfolge im Lernpfad.
+    """
+    key = " ".join(query.strip().lower().split())
+    if not key:
+        return []
+    verbs = load_verbs()
+    if key in verbs:
+        return [verbs[key]]
+    matches = [v for v in verbs.values() if key in _german_words(v.meaning)]
+    return sorted(matches, key=lambda v: v.rank)
+
+
 # --------------------------------------------------------------------- Presente
 def _regular_presente(verb: Verb) -> list[str]:
     stem, group = verb.stem, verb.group
