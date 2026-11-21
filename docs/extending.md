@@ -61,3 +61,26 @@ Die Tabellen werden beim Start mit `create_all` angelegt. Das legt neue
 Tabellen an, ändert aber keine bestehenden. Für spätere Änderungen an
 bestehenden Tabellen (neue Spalte) wird ein Migrationswerkzeug wie Alembic
 empfohlen.
+
+## Ausblick: Schriftliche Unterhaltung mit einer KI
+
+Idee: Nach dem Training kurze Gespräche auf Italienisch führen, in denen die
+geübten Verben vorkommen. Das ist nicht umgesetzt; so würde es eingebaut:
+
+* **Backend:** neuer Endpunkt in `main.py` (zum Beispiel `POST /api/chat`), der
+  die Nachricht an ein Sprachmodell weiterreicht. Die Logik dazu (welche Verben
+  und Zeiten die Person gerade lernt, Anweisung an das Modell) gehört in ein
+  eigenes Modul, wie `examples.py` für Tatoeba (Entscheid 0012).
+* **Schlüssel:** Der API-Schlüssel des Anbieters wird wie `DATABASE_URL` als
+  Umgebungsvariable bei Render hinterlegt. Der Browser ruft das Modell nie
+  direkt auf, sonst wäre der Schlüssel öffentlich sichtbar.
+* **Anbieter:** Möglich sind die Schnittstelle eines Anbieters direkt, ein
+  Vermittler wie OpenRouter oder das AI Gateway von Neon. Alle drei bieten eine
+  Schnittstelle, die mit der von OpenAI kompatibel ist; der Wechsel ist also
+  vor allem eine andere Adresse und ein anderer Schlüssel. Das AI Gateway lässt
+  sich im Neon-Projekt auch später noch einschalten.
+* **Wie bei Tatoeba:** Timeout und Rückfallebene, damit die App weiterläuft,
+  wenn der Dienst nicht antwortet; in den Tests wird der Dienst ersetzt (Mock).
+* **Neu zu klären:** Kosten pro Nachricht, Begrenzung der Anfragen pro Person
+  (heute gibt es kein Rate Limiting) und Datenschutz, weil Texte an einen
+  externen Anbieter gehen.

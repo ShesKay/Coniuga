@@ -4,7 +4,7 @@ Date: 2026-11-19
 
 ## Status
 
-Accepted
+Accepted; wird durch 0015 abgelöst (Umsetzung nach der Abgabe)
 
 ## Context
 
@@ -22,7 +22,9 @@ Karteikasten mit 5 Fächern (Wartezeit 1 Minute bis 7 Tage). Start mit 8 Verben;
 
 ## Reasons
 
-Leicht verständlich, gut testbar und für die Lernenden transparent (Fach wird angezeigt). Die Schwelle lag zuerst bei 60 %. Ein Test zeigte, dass dann mehrere Stufen auf einmal freigeschaltet werden: 8 sichere von 12 Verben ergeben bereits 67 %. Mit 80 % ist das ausgeschlossen (siehe docs/challenges.md).
+Leicht verständlich, gut testbar und für die Lernenden transparent (Fach wird angezeigt). Die Schwelle lag zuerst bei 60 %. Ein Test zeigte, dass dann mehrere Stufen auf einmal freigeschaltet werden: 8 sichere von 12 Verben ergeben bereits 67 %. Mit 80 % ist das für den ersten Schritt ausgeschlossen (siehe docs/challenges.md).
+
+Korrektur (21.11.2026): Für spätere Schritte stimmte das nicht. Ab 16 sicheren Verben sind 16 von 20 bereits 80 %, und der nächste Block wurde frei, bevor die neuen Verben geübt waren. Behoben mit einer zweiten Bedingung: Auch der zuletzt dazugekommene Block muss zu 80 % sitzen (Pull Request #5, docs/challenges.md Punkt 1).
 
 ## Consequences
 
