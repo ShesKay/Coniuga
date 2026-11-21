@@ -63,6 +63,7 @@ createApp({
       focusVerb: "",
       tenses: [],
       selectedTenses: null,
+      selectedBoxes: [], // leer = alle Fächer
       accents: ["à", "è", "é", "ì", "ò", "ù"],
       lookupInput: "",
       lookupError: "",
@@ -129,7 +130,8 @@ createApp({
     async nextExercise() {
       const params = new URLSearchParams();
       if (this.focusVerb) params.set("verb", this.focusVerb);
-      if (this.exercise) {
+      this.selectedBoxes.forEach((b) => params.append("box", b));
+      if (this.exercise && !this.exercise.empty) {
         params.set("last_verb", this.exercise.verb);
         params.set("last_tense", this.exercise.tense);
         params.set("last_person", this.exercise.person);
@@ -160,6 +162,15 @@ createApp({
       const current = this.selectedTenses ? [...this.selectedTenses] : [];
       const next = current.includes(key) ? current.filter((t) => t !== key) : [...current, key];
       this.setTenses(next.length ? next : null);
+    },
+    toggleBox(box) {
+      const on = this.selectedBoxes.includes(box);
+      this.selectedBoxes = on ? this.selectedBoxes.filter((b) => b !== box) : [...this.selectedBoxes, box].sort();
+      this.nextExercise();
+    },
+    allBoxes() {
+      this.selectedBoxes = [];
+      this.nextExercise();
     },
     addAccent(a) {
       this.answer += a;

@@ -42,13 +42,24 @@
                   @click="toggleTense(t.key)">{{ t.label }}</button>
         </div>
         <p class="muted small">{{ selectedTenses ? 'Du übst die gewählten Zeiten, auch wenn sie im Lernpfad noch gesperrt sind.' : 'Lernpfad: Die nächste Zeit wird frei, sobald die vorherige sitzt.' }}</p>
+        <div class="chips">
+          <span class="chips-label">Fächer</span>
+          <button type="button" :class="['chip', {on: !selectedBoxes.length}]" @click="allBoxes">Alle</button>
+          <button type="button" v-for="b in [1, 2, 3, 4, 5]" :key="b"
+                  :class="['chip', {on: selectedBoxes.includes(b)}]" @click="toggleBox(b)">{{ b }}</button>
+        </div>
+        <p class="muted small">{{ selectedBoxes.length ? 'Du übst nur Fach ' + selectedBoxes.join(', ') + '. Neue Verbformen zählen als Fach 1.' : 'Alle Fächer: fällige und neue Formen gemischt.' }}</p>
         <select v-model="focusVerb" @change="nextExercise">
           <option value="">Alle Verben (adaptiv)</option>
           <option v-for="v in verbs" :key="v.infinitive" :value="v.infinitive">{{ v.infinitive }} · {{ v.meaning }}</option>
         </select>
       </div>
 
-      <div v-if="exercise" class="card exercise">
+      <div v-if="exercise && exercise.empty" class="card">
+        <p>In den gewählten Fächern liegt gerade nichts. Wähle weitere Fächer oder «Alle».</p>
+      </div>
+
+      <div v-if="exercise && !exercise.empty" class="card exercise">
         <div class="meta">
           <span class="tense">{{ exercise.tense_label }}</span>
           <span v-if="exercise.new" class="badge">neu</span>

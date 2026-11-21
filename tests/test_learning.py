@@ -138,3 +138,18 @@ def test_no_cascade_when_new_block_is_not_practised():
     verbs = [f"verb{i}" for i in range(30)]
     states = mastered(verbs[:16])
     assert learning.active_verb_count(states, verbs) == 20
+
+
+def test_box_filter_only_picks_chosen_boxes():
+    states = mastered(VERBS[:8], box=4)
+    states[("verb2", "presente", 3)] = ItemState("verb2", "presente", 3, box=2)
+    assert choose_next(states, VERBS, NOW, boxes=[2]) == ("verb2", "presente", 3)
+
+
+def test_box_filter_counts_new_items_as_box_1():
+    key = choose_next({}, VERBS, NOW, boxes=[1])
+    assert key is not None and key[0] in VERBS[: learning.START_VERBS]
+
+
+def test_box_filter_returns_none_when_nothing_matches():
+    assert choose_next(mastered(VERBS[:8], box=4), VERBS, NOW, boxes=[5]) is None

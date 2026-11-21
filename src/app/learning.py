@@ -134,6 +134,11 @@ def active_verb_count(
     return n
 
 
+def box_of(states: dict[Key, ItemState], key: Key) -> int:
+    """Fach eines Items; ein neues, noch nie gesehenes Item zählt als Fach 1."""
+    return states[key].box if key in states else 1
+
+
 def choose_next(
     states: dict[Key, ItemState],
     ordered_verbs: list[str],
@@ -142,7 +147,8 @@ def choose_next(
     focus_verb: str | None = None,
     tenses: list[str] | None = None,
     rng: random.Random | None = None,
-) -> Key:
+    boxes: list[int] | None = None,
+) -> Key | None:
     """Wählt die nächste Aufgabe.
 
     Reihenfolge der Prioritäten:
@@ -150,7 +156,9 @@ def choose_next(
      2. neue, noch nie gesehene Items der aktiven Verben
      3. falls alles erledigt ist: das Item, das als nächstes fällig wird
     ``tenses`` ist die eigene Auswahl (sonst Lernpfad), ``focus_verb``
-    schränkt auf ein Verb ein.
+    schränkt auf ein Verb ein. ``boxes`` schränkt auf die gewählten Fächer
+    ein; neue Items zählen als Fach 1. Liegt in den gewählten Fächern nichts,
+    ist das Ergebnis ``None``.
     """
     rng = rng or random.Random()
     tenses = practice_tenses(states, ordered_verbs, tenses)
@@ -159,6 +167,10 @@ def choose_next(
     else:
         verbs = ordered_verbs[: active_verb_count(states, ordered_verbs, tenses)]
     candidates = [(v, t, p) for v in verbs for t in tenses for p in range(len(PERSONS))]
+    if boxes:
+        candidates = [k for k in candidates if box_of(states, k) in boxes]
+        if not candidates:
+            return None
     if len(candidates) > 1 and last_key in candidates:
         candidates.remove(last_key)
 

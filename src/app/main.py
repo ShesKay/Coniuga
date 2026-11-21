@@ -226,9 +226,13 @@ def next_exercise(
     last_verb: str | None = None,
     last_tense: str | None = None,
     last_person: int | None = None,
+    box: Annotated[list[int] | None, Query()] = None,
 ):
-    """Nächste Aufgabe gemäss Lernlogik, optional mit Fokus auf Verb oder Zeit."""
+    """Nächste Aufgabe gemäss Lernlogik, optional mit Fokus auf Verb, Zeit
+    oder Fächer (``?box=1&box=3``)."""
     user = find_user(session, name)
+    if box and any(not 1 <= b <= learning.MAX_BOX for b in box):
+        raise HTTPException(422, f"Fach muss zwischen 1 und {learning.MAX_BOX} liegen")
     if verb:
         check_verb_and_tense(verb, tense)
     elif tense:
@@ -240,9 +244,12 @@ def next_exercise(
         else None
     )
     tenses = [tense] if tense else selected_tenses(user)
-    v, t, p = learning.choose_next(
-        states, ordered_verbs(), now_utc(), last, verb, tenses
+    key = learning.choose_next(
+        states, ordered_verbs(), now_utc(), last, verb, tenses, boxes=box
     )
+    if key is None:
+        return {"empty": True}
+    v, t, p = key
     info = conjugation.get_verb(v)
     state = states.get((v, t, p))
     return {

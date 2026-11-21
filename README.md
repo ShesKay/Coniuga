@@ -9,6 +9,8 @@ Beispielsätze zeigen die geübte Form im Kontext.
 
 Projekt im Modul SWEN (HSLU, HS2026).
 
+**Online:** https://coniuga.onrender.com (Gratisplan: Nach rund 15 Minuten ohne Aufruf schläft die App; der erste Aufruf danach dauert bis etwa eine Minute.)
+
 ## Funktionen
 
 | Funktion | Beschreibung |
@@ -71,7 +73,11 @@ Danach ist die App unter http://localhost:8000 erreichbar.
   `render.yaml`. Jeder Push auf `master` löst automatisch ein neues Deployment aus.
 * **Datenbank:** PostgreSQL bei [Neon](https://neon.tech). Die Verbindungs-URL
   wird bei Render als Umgebungsvariable `DATABASE_URL` hinterlegt.
-* Öffentliche URL: *wird nach dem ersten Deployment eingetragen*
+* Öffentliche URL: https://coniuga.onrender.com
+* Gratisplan: Render legt die App nach rund 15 Minuten ohne Aufruf schlafen,
+  der erste Aufruf danach dauert bis etwa eine Minute. Auch die Datenbank bei
+  Neon schaltet nach 5 Minuten ab und startet bei der nächsten Anfrage neu
+  (Entscheid 0006).
 
 Begründungen siehe `docs/decisions/0006-hosting.md`.
 
