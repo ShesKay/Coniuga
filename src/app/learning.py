@@ -123,10 +123,13 @@ def active_verb_count(
     """
     base = (tenses or tense_order())[0]
     n = min(START_VERBS, len(ordered_verbs))
+    newest = ordered_verbs[:n]  # der zuletzt dazugekommene Block
     while (
         n < len(ordered_verbs)
         and mastery(states, ordered_verbs[:n], base) >= UNLOCK_THRESHOLD
+        and mastery(states, newest, base) >= UNLOCK_THRESHOLD
     ):
+        newest = ordered_verbs[n : n + STEP_VERBS]
         n = min(n + STEP_VERBS, len(ordered_verbs))
     return n
 
