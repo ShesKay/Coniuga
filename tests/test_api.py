@@ -159,3 +159,12 @@ def test_invalid_tense_selection(client):
     login(client)
     res = client.put("/api/users/Kay/settings", json={"tenses": ["futuro"]})
     assert res.status_code == 422
+
+
+def test_search_verbs_endpoint(client):
+    assert client.get("/api/verbs/search?q=gehen").json() == [
+        {"infinitive": "andare", "meaning": "gehen"}
+    ]
+    assert len(client.get("/api/verbs/search?q=bleiben").json()) == 3
+    assert client.get("/api/verbs/search?q=kochen").json() == []
+    assert client.get("/api/verbs/search?q=").status_code == 422

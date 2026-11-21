@@ -69,6 +69,7 @@ erDiagram
 | GET | `/api/health` | Health-Check für Render und CI |
 | GET | `/api/tenses` | alle registrierten Zeiten in der Reihenfolge des Lernpfads |
 | GET | `/api/verbs` | alle Verben |
+| GET | `/api/verbs/search?q=` | Verb suchen, Italienisch oder Deutsch; kann mehrere Treffer liefern |
 | GET | `/api/verbs/{verb}` | Konjugationstabelle (Nachschlagen) |
 | GET | `/api/verbs/{verb}/examples?tense=&person=` | Beispielsätze (Tatoeba) |
 | POST | `/api/users` | anmelden bzw. anlegen (nur Name) |

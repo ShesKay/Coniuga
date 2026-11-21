@@ -66,6 +66,8 @@ createApp({
       accents: ["à", "è", "é", "ì", "ò", "ù"],
       lookupInput: "",
       lookupError: "",
+      lookupChoices: [],
+      suggestOpen: false,
       table: null,
       examples: null,
       progress: null,
@@ -82,6 +84,23 @@ createApp({
         this.logout();
       }
     }
+  },
+  computed: {
+    // Vorschlagsliste im Nachschlagen (eigene Liste statt <datalist>, die auf
+    // Handys unzuverlässig ist). Leeres Feld: alle Verben, alphabetisch.
+    // Beim Tippen: Infinitiv oder deutsches Wort beginnt mit der Eingabe.
+    suggestions() {
+      const q = this.lookupInput.trim().toLowerCase();
+      const sorted = [...this.verbs].sort((a, b) => a.infinitive.localeCompare(b.infinitive, "it"));
+      if (!q) return sorted;
+      return sorted.filter((v) => {
+        const words = v.meaning.toLowerCase().split(",").map((w) => w.trim());
+        return (
+          v.infinitive.startsWith(q) ||
+          words.some((w) => w.startsWith(q) || w.replace(/^sich /, "").startsWith(q))
+        );
+      });
+    },
   },
   methods: {
     async login() {
@@ -146,15 +165,34 @@ createApp({
       this.answer += a;
       this.$refs.answerInput.focus();
     },
-    async lookup(verb) {
+    pickSuggestion(infinitive) {
+      this.lookupInput = infinitive;
+      this.suggestOpen = false;
       this.lookupError = "";
+      this.showTable(infinitive);
+    },
+    async lookup(query) {
+      // Italienisch oder Deutsch; ein deutsches Wort kann mehrere Verben ergeben
+      this.suggestOpen = false;
+      this.lookupError = "";
+      this.lookupChoices = [];
       this.examples = null;
-      try {
-        this.table = await api(`/api/verbs/${encodeURIComponent(verb.trim().toLowerCase())}`);
-      } catch (e) {
-        this.table = null;
-        this.lookupError = "Dieses Verb ist noch nicht in Coniuga enthalten.";
+      this.table = null;
+      const q = query.trim();
+      if (!q) return;
+      const hits = await api(`/api/verbs/search?q=${encodeURIComponent(q)}`);
+      if (hits.length === 1) {
+        this.showTable(hits[0].infinitive);
+      } else if (hits.length > 1) {
+        this.lookupChoices = hits;
+      } else {
+        this.lookupError = `«${q}» ist weder als italienisches Verb noch als deutsche Bedeutung in Coniuga enthalten.`;
       }
+    },
+    async showTable(infinitive) {
+      this.lookupChoices = [];
+      this.examples = null;
+      this.table = await api(`/api/verbs/${encodeURIComponent(infinitive)}`);
     },
     practiceVerb(verb) {
       this.focusVerb = verb;

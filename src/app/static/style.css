@@ -96,3 +96,8 @@ li.accent { color: var(--warn); }
 li.wrong { color: var(--bad); }
 .examples .src { font-size: 0.8rem; margin-left: 6px; }
 footer { text-align: center; color: var(--muted); font-size: 0.8rem; margin-top: 20px; }
+.choices { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+.choices p { width: 100%; margin: 0 0 4px; }
+.suggestions { list-style: none; margin: 4px 0 8px; padding: 0; max-height: 260px; overflow-y: auto; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+.suggestions li + li { border-top: 1px solid var(--line); }
+.suggestions button { display: block; width: 100%; margin: 0; padding: 12px; text-align: left; background: none; color: var(--text); border: 0; border-radius: 0; font-size: 16px; }
