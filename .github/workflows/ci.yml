@@ -21,6 +21,8 @@ jobs:
         run: uv run ruff format --check src tests
       - name: Tests (pytest)
         run: uv run pytest
+      - name: JavaScript prüfen (Syntax)
+        run: node --check src/app/static/app.js
 
   docker:
     runs-on: ubuntu-latest
