@@ -5,6 +5,7 @@ services:
     name: coniuga
     runtime: docker
     plan: free
+    region: frankfurt # gleiche Region wie die Datenbank bei Neon; nach dem Anlegen nicht mehr änderbar
     branch: master
     autoDeploy: true
     healthCheckPath: /api/health
