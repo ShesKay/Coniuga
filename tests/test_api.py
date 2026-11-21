@@ -168,3 +168,4 @@ def test_search_verbs_endpoint(client):
     assert len(client.get("/api/verbs/search?q=bleiben").json()) == 3
     assert client.get("/api/verbs/search?q=kochen").json() == []
     assert client.get("/api/verbs/search?q=").status_code == 422
+    
