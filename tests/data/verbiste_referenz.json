@@ -1,0 +1,1526 @@
+{
+ "_quelle": "Verbiste (italienisches Konjugationswörterbuch, verbiste.org), gelesen über das Python-Paket mlconjug3 4.0.1 am 23.11.2026. Pro Form alle Varianten, die Verbiste nennt; jede gilt als richtig.",
+ "_korrekturen": {
+  "bere": "Verbiste bildet bere über die Vorlage be:vere ohne Wortstamm und liefert «vo, vi, ve …».",
+  "sapere": "Verbiste liefert an dieser Stelle die weibliche Form «saputa».",
+  "perdere": "Verbiste liefert an dieser Stelle «perdo/perduto»; «perdo» ist eine Presente-Form."
+ },
+ "verben": {
+  "essere": {
+   "presente": [
+    [
+     "sono"
+    ],
+    [
+     "sei"
+    ],
+    [
+     "è"
+    ],
+    [
+     "siamo"
+    ],
+    [
+     "siete"
+    ],
+    [
+     "sono"
+    ]
+   ],
+   "participio": [
+    "stato"
+   ]
+  },
+  "avere": {
+   "presente": [
+    [
+     "ho"
+    ],
+    [
+     "hai"
+    ],
+    [
+     "ha"
+    ],
+    [
+     "abbiamo"
+    ],
+    [
+     "avete"
+    ],
+    [
+     "hanno"
+    ]
+   ],
+   "participio": [
+    "avuto"
+   ]
+  },
+  "fare": {
+   "presente": [
+    [
+     "faccio",
+     "fo"
+    ],
+    [
+     "fai"
+    ],
+    [
+     "fa"
+    ],
+    [
+     "facciamo"
+    ],
+    [
+     "fate"
+    ],
+    [
+     "fanno"
+    ]
+   ],
+   "participio": [
+    "fatto"
+   ]
+  },
+  "andare": {
+   "presente": [
+    [
+     "vado"
+    ],
+    [
+     "vai"
+    ],
+    [
+     "va"
+    ],
+    [
+     "andiamo"
+    ],
+    [
+     "andate"
+    ],
+    [
+     "vanno"
+    ]
+   ],
+   "participio": [
+    "andato"
+   ]
+  },
+  "parlare": {
+   "presente": [
+    [
+     "parlo"
+    ],
+    [
+     "parli"
+    ],
+    [
+     "parla"
+    ],
+    [
+     "parliamo"
+    ],
+    [
+     "parlate"
+    ],
+    [
+     "parlano"
+    ]
+   ],
+   "participio": [
+    "parlato"
+   ]
+  },
+  "mangiare": {
+   "presente": [
+    [
+     "mangio"
+    ],
+    [
+     "mangi"
+    ],
+    [
+     "mangia"
+    ],
+    [
+     "mangiamo"
+    ],
+    [
+     "mangiate"
+    ],
+    [
+     "mangiano"
+    ]
+   ],
+   "participio": [
+    "mangiato"
+   ]
+  },
+  "abitare": {
+   "presente": [
+    [
+     "abito"
+    ],
+    [
+     "abiti"
+    ],
+    [
+     "abita"
+    ],
+    [
+     "abitiamo"
+    ],
+    [
+     "abitate"
+    ],
+    [
+     "abitano"
+    ]
+   ],
+   "participio": [
+    "abitato"
+   ]
+  },
+  "lavorare": {
+   "presente": [
+    [
+     "lavoro"
+    ],
+    [
+     "lavori"
+    ],
+    [
+     "lavora"
+    ],
+    [
+     "lavoriamo"
+    ],
+    [
+     "lavorate"
+    ],
+    [
+     "lavorano"
+    ]
+   ],
+   "participio": [
+    "lavorato"
+   ]
+  },
+  "potere": {
+   "presente": [
+    [
+     "posso"
+    ],
+    [
+     "puoi"
+    ],
+    [
+     "può"
+    ],
+    [
+     "possiamo"
+    ],
+    [
+     "potete"
+    ],
+    [
+     "possono"
+    ]
+   ],
+   "participio": [
+    "potuto"
+   ]
+  },
+  "volere": {
+   "presente": [
+    [
+     "voglio",
+     "vò"
+    ],
+    [
+     "vuoi"
+    ],
+    [
+     "vuole"
+    ],
+    [
+     "vogliamo"
+    ],
+    [
+     "volete"
+    ],
+    [
+     "vogliono"
+    ]
+   ],
+   "participio": [
+    "voluto"
+   ]
+  },
+  "dovere": {
+   "presente": [
+    [
+     "devo",
+     "debbo"
+    ],
+    [
+     "devi"
+    ],
+    [
+     "deve"
+    ],
+    [
+     "dobbiamo"
+    ],
+    [
+     "dovete"
+    ],
+    [
+     "devono",
+     "debbono"
+    ]
+   ],
+   "participio": [
+    "dovuto"
+   ]
+  },
+  "prendere": {
+   "presente": [
+    [
+     "prendo"
+    ],
+    [
+     "prendi"
+    ],
+    [
+     "prende"
+    ],
+    [
+     "prendiamo"
+    ],
+    [
+     "prendete"
+    ],
+    [
+     "prendono"
+    ]
+   ],
+   "participio": [
+    "preso"
+   ]
+  },
+  "dormire": {
+   "presente": [
+    [
+     "dormo"
+    ],
+    [
+     "dormi"
+    ],
+    [
+     "dorme"
+    ],
+    [
+     "dormiamo"
+    ],
+    [
+     "dormite"
+    ],
+    [
+     "dormono"
+    ]
+   ],
+   "participio": [
+    "dormito"
+   ]
+  },
+  "capire": {
+   "presente": [
+    [
+     "capisco"
+    ],
+    [
+     "capisci"
+    ],
+    [
+     "capisce"
+    ],
+    [
+     "capiamo"
+    ],
+    [
+     "capite"
+    ],
+    [
+     "capiscono"
+    ]
+   ],
+   "participio": [
+    "capito"
+   ]
+  },
+  "stare": {
+   "presente": [
+    [
+     "sto"
+    ],
+    [
+     "stai"
+    ],
+    [
+     "sta"
+    ],
+    [
+     "stiamo"
+    ],
+    [
+     "state"
+    ],
+    [
+     "stanno"
+    ]
+   ],
+   "participio": [
+    "stato"
+   ]
+  },
+  "venire": {
+   "presente": [
+    [
+     "vengo"
+    ],
+    [
+     "vieni"
+    ],
+    [
+     "viene"
+    ],
+    [
+     "veniamo"
+    ],
+    [
+     "venite"
+    ],
+    [
+     "vengono"
+    ]
+   ],
+   "participio": [
+    "venuto"
+   ]
+  },
+  "dire": {
+   "presente": [
+    [
+     "dico"
+    ],
+    [
+     "dici"
+    ],
+    [
+     "dice"
+    ],
+    [
+     "diciamo"
+    ],
+    [
+     "dite"
+    ],
+    [
+     "dicono"
+    ]
+   ],
+   "participio": [
+    "detto"
+   ]
+  },
+  "sapere": {
+   "presente": [
+    [
+     "so"
+    ],
+    [
+     "sai"
+    ],
+    [
+     "sa"
+    ],
+    [
+     "sappiamo"
+    ],
+    [
+     "sapete"
+    ],
+    [
+     "sanno"
+    ]
+   ],
+   "participio": [
+    "saputo"
+   ]
+  },
+  "vedere": {
+   "presente": [
+    [
+     "vedo",
+     "veggo"
+    ],
+    [
+     "vedi"
+    ],
+    [
+     "vede"
+    ],
+    [
+     "vediamo"
+    ],
+    [
+     "vedete"
+    ],
+    [
+     "vedono",
+     "veggono"
+    ]
+   ],
+   "participio": [
+    "veduto",
+    "visto"
+   ]
+  },
+  "studiare": {
+   "presente": [
+    [
+     "studio"
+    ],
+    [
+     "studi"
+    ],
+    [
+     "studia"
+    ],
+    [
+     "studiamo"
+    ],
+    [
+     "studiate"
+    ],
+    [
+     "studiano"
+    ]
+   ],
+   "participio": [
+    "studiato"
+   ]
+  },
+  "cercare": {
+   "presente": [
+    [
+     "cerco"
+    ],
+    [
+     "cerchi"
+    ],
+    [
+     "cerca"
+    ],
+    [
+     "cerchiamo"
+    ],
+    [
+     "cercate"
+    ],
+    [
+     "cercano"
+    ]
+   ],
+   "participio": [
+    "cercato"
+   ]
+  },
+  "pagare": {
+   "presente": [
+    [
+     "pago"
+    ],
+    [
+     "paghi"
+    ],
+    [
+     "paga"
+    ],
+    [
+     "paghiamo"
+    ],
+    [
+     "pagate"
+    ],
+    [
+     "pagano"
+    ]
+   ],
+   "participio": [
+    "pagato"
+   ]
+  },
+  "comprare": {
+   "presente": [
+    [
+     "compro"
+    ],
+    [
+     "compri"
+    ],
+    [
+     "compra"
+    ],
+    [
+     "compriamo"
+    ],
+    [
+     "comprate"
+    ],
+    [
+     "comprano"
+    ]
+   ],
+   "participio": [
+    "comprato"
+   ]
+  },
+  "finire": {
+   "presente": [
+    [
+     "finisco"
+    ],
+    [
+     "finisci"
+    ],
+    [
+     "finisce"
+    ],
+    [
+     "finiamo"
+    ],
+    [
+     "finite"
+    ],
+    [
+     "finiscono"
+    ]
+   ],
+   "participio": [
+    "finito"
+   ]
+  },
+  "partire": {
+   "presente": [
+    [
+     "parto"
+    ],
+    [
+     "parti"
+    ],
+    [
+     "parte"
+    ],
+    [
+     "partiamo"
+    ],
+    [
+     "partite"
+    ],
+    [
+     "partono"
+    ]
+   ],
+   "participio": [
+    "partito"
+   ]
+  },
+  "arrivare": {
+   "presente": [
+    [
+     "arrivo"
+    ],
+    [
+     "arrivi"
+    ],
+    [
+     "arriva"
+    ],
+    [
+     "arriviamo"
+    ],
+    [
+     "arrivate"
+    ],
+    [
+     "arrivano"
+    ]
+   ],
+   "participio": [
+    "arrivato"
+   ]
+  },
+  "tornare": {
+   "presente": [
+    [
+     "torno"
+    ],
+    [
+     "torni"
+    ],
+    [
+     "torna"
+    ],
+    [
+     "torniamo"
+    ],
+    [
+     "tornate"
+    ],
+    [
+     "tornano"
+    ]
+   ],
+   "participio": [
+    "tornato"
+   ]
+  },
+  "uscire": {
+   "presente": [
+    [
+     "esco"
+    ],
+    [
+     "esci"
+    ],
+    [
+     "esce"
+    ],
+    [
+     "usciamo"
+    ],
+    [
+     "uscite"
+    ],
+    [
+     "escono"
+    ]
+   ],
+   "participio": [
+    "uscito"
+   ]
+  },
+  "dare": {
+   "presente": [
+    [
+     "do"
+    ],
+    [
+     "dai"
+    ],
+    [
+     "dà"
+    ],
+    [
+     "diamo"
+    ],
+    [
+     "date"
+    ],
+    [
+     "danno"
+    ]
+   ],
+   "participio": [
+    "dato"
+   ]
+  },
+  "bere": {
+   "presente": [
+    [
+     "bevo"
+    ],
+    [
+     "bevi"
+    ],
+    [
+     "beve"
+    ],
+    [
+     "beviamo"
+    ],
+    [
+     "bevete"
+    ],
+    [
+     "bevono"
+    ]
+   ],
+   "participio": [
+    "bevuto"
+   ]
+  },
+  "leggere": {
+   "presente": [
+    [
+     "leggo"
+    ],
+    [
+     "leggi"
+    ],
+    [
+     "legge"
+    ],
+    [
+     "leggiamo"
+    ],
+    [
+     "leggete"
+    ],
+    [
+     "leggono"
+    ]
+   ],
+   "participio": [
+    "letto"
+   ]
+  },
+  "scrivere": {
+   "presente": [
+    [
+     "scrivo"
+    ],
+    [
+     "scrivi"
+    ],
+    [
+     "scrive"
+    ],
+    [
+     "scriviamo"
+    ],
+    [
+     "scrivete"
+    ],
+    [
+     "scrivono"
+    ]
+   ],
+   "participio": [
+    "scritto"
+   ]
+  },
+  "mettere": {
+   "presente": [
+    [
+     "metto"
+    ],
+    [
+     "metti"
+    ],
+    [
+     "mette"
+    ],
+    [
+     "mettiamo"
+    ],
+    [
+     "mettete"
+    ],
+    [
+     "mettono"
+    ]
+   ],
+   "participio": [
+    "messo"
+   ]
+  },
+  "chiedere": {
+   "presente": [
+    [
+     "chiedo"
+    ],
+    [
+     "chiedi"
+    ],
+    [
+     "chiede"
+    ],
+    [
+     "chiediamo"
+    ],
+    [
+     "chiedete"
+    ],
+    [
+     "chiedono"
+    ]
+   ],
+   "participio": [
+    "chiesto"
+   ]
+  },
+  "rispondere": {
+   "presente": [
+    [
+     "rispondo"
+    ],
+    [
+     "rispondi"
+    ],
+    [
+     "risponde"
+    ],
+    [
+     "rispondiamo"
+    ],
+    [
+     "rispondete"
+    ],
+    [
+     "rispondono"
+    ]
+   ],
+   "participio": [
+    "risposto",
+    "risposo"
+   ]
+  },
+  "sentire": {
+   "presente": [
+    [
+     "sento"
+    ],
+    [
+     "senti"
+    ],
+    [
+     "sente"
+    ],
+    [
+     "sentiamo"
+    ],
+    [
+     "sentite"
+    ],
+    [
+     "sentono"
+    ]
+   ],
+   "participio": [
+    "sentito"
+   ]
+  },
+  "aprire": {
+   "presente": [
+    [
+     "apro"
+    ],
+    [
+     "apri"
+    ],
+    [
+     "apre"
+    ],
+    [
+     "apriamo"
+    ],
+    [
+     "aprite"
+    ],
+    [
+     "aprono"
+    ]
+   ],
+   "participio": [
+    "aperto"
+   ]
+  },
+  "preferire": {
+   "presente": [
+    [
+     "preferisco"
+    ],
+    [
+     "preferisci"
+    ],
+    [
+     "preferisce"
+    ],
+    [
+     "preferiamo"
+    ],
+    [
+     "preferite"
+    ],
+    [
+     "preferiscono"
+    ]
+   ],
+   "participio": [
+    "preferito"
+   ]
+  },
+  "guardare": {
+   "presente": [
+    [
+     "guardo"
+    ],
+    [
+     "guardi"
+    ],
+    [
+     "guarda"
+    ],
+    [
+     "guardiamo"
+    ],
+    [
+     "guardate"
+    ],
+    [
+     "guardano"
+    ]
+   ],
+   "participio": [
+    "guardato"
+   ]
+  },
+  "ascoltare": {
+   "presente": [
+    [
+     "ascolto"
+    ],
+    [
+     "ascolti"
+    ],
+    [
+     "ascolta"
+    ],
+    [
+     "ascoltiamo"
+    ],
+    [
+     "ascoltate"
+    ],
+    [
+     "ascoltano"
+    ]
+   ],
+   "participio": [
+    "ascoltato"
+   ]
+  },
+  "aspettare": {
+   "presente": [
+    [
+     "aspetto"
+    ],
+    [
+     "aspetti"
+    ],
+    [
+     "aspetta"
+    ],
+    [
+     "aspettiamo"
+    ],
+    [
+     "aspettate"
+    ],
+    [
+     "aspettano"
+    ]
+   ],
+   "participio": [
+    "aspettato"
+   ]
+  },
+  "chiamare": {
+   "presente": [
+    [
+     "chiamo"
+    ],
+    [
+     "chiami"
+    ],
+    [
+     "chiama"
+    ],
+    [
+     "chiamiamo"
+    ],
+    [
+     "chiamate"
+    ],
+    [
+     "chiamano"
+    ]
+   ],
+   "participio": [
+    "chiamato"
+   ]
+  },
+  "cominciare": {
+   "presente": [
+    [
+     "comincio"
+    ],
+    [
+     "cominci"
+    ],
+    [
+     "comincia"
+    ],
+    [
+     "cominciamo"
+    ],
+    [
+     "cominciate"
+    ],
+    [
+     "cominciano"
+    ]
+   ],
+   "participio": [
+    "cominciato"
+   ]
+  },
+  "giocare": {
+   "presente": [
+    [
+     "gioco",
+     "giuoco"
+    ],
+    [
+     "giochi",
+     "giuochi"
+    ],
+    [
+     "gioca",
+     "giuoca"
+    ],
+    [
+     "giochiamo"
+    ],
+    [
+     "giocate"
+    ],
+    [
+     "giocano",
+     "giuocano"
+    ]
+   ],
+   "participio": [
+    "giocato"
+   ]
+  },
+  "viaggiare": {
+   "presente": [
+    [
+     "viaggio"
+    ],
+    [
+     "viaggi"
+    ],
+    [
+     "viaggia"
+    ],
+    [
+     "viaggiamo"
+    ],
+    [
+     "viaggiate"
+    ],
+    [
+     "viaggiano"
+    ]
+   ],
+   "participio": [
+    "viaggiato"
+   ]
+  },
+  "imparare": {
+   "presente": [
+    [
+     "imparo"
+    ],
+    [
+     "impari"
+    ],
+    [
+     "impara"
+    ],
+    [
+     "impariamo"
+    ],
+    [
+     "imparate"
+    ],
+    [
+     "imparano"
+    ]
+   ],
+   "participio": [
+    "imparato"
+   ]
+  },
+  "trovare": {
+   "presente": [
+    [
+     "trovo"
+    ],
+    [
+     "trovi"
+    ],
+    [
+     "trova"
+    ],
+    [
+     "troviamo"
+    ],
+    [
+     "trovate"
+    ],
+    [
+     "trovano"
+    ]
+   ],
+   "participio": [
+    "trovato"
+   ]
+  },
+  "pensare": {
+   "presente": [
+    [
+     "penso"
+    ],
+    [
+     "pensi"
+    ],
+    [
+     "pensa"
+    ],
+    [
+     "pensiamo"
+    ],
+    [
+     "pensate"
+    ],
+    [
+     "pensano"
+    ]
+   ],
+   "participio": [
+    "pensato"
+   ]
+  },
+  "credere": {
+   "presente": [
+    [
+     "credo"
+    ],
+    [
+     "credi"
+    ],
+    [
+     "crede"
+    ],
+    [
+     "crediamo"
+    ],
+    [
+     "credete"
+    ],
+    [
+     "credono"
+    ]
+   ],
+   "participio": [
+    "creduto"
+   ]
+  },
+  "vivere": {
+   "presente": [
+    [
+     "vivo"
+    ],
+    [
+     "vivi"
+    ],
+    [
+     "vive"
+    ],
+    [
+     "viviamo"
+    ],
+    [
+     "vivete"
+    ],
+    [
+     "vivono"
+    ]
+   ],
+   "participio": [
+    "vissuto",
+    "vivuto",
+    "visso"
+   ]
+  },
+  "perdere": {
+   "presente": [
+    [
+     "perdo"
+    ],
+    [
+     "perdi"
+    ],
+    [
+     "perde"
+    ],
+    [
+     "perdiamo"
+    ],
+    [
+     "perdete"
+    ],
+    [
+     "perdono"
+    ]
+   ],
+   "participio": [
+    "perso",
+    "perduto"
+   ]
+  },
+  "vendere": {
+   "presente": [
+    [
+     "vendo"
+    ],
+    [
+     "vendi"
+    ],
+    [
+     "vende"
+    ],
+    [
+     "vendiamo"
+    ],
+    [
+     "vendete"
+    ],
+    [
+     "vendono"
+    ]
+   ],
+   "participio": [
+    "venduto"
+   ]
+  },
+  "rimanere": {
+   "presente": [
+    [
+     "rimango"
+    ],
+    [
+     "rimani"
+    ],
+    [
+     "rimane"
+    ],
+    [
+     "rimaniamo"
+    ],
+    [
+     "rimanete"
+    ],
+    [
+     "rimangono"
+    ]
+   ],
+   "participio": [
+    "rimasto",
+    "rimaso"
+   ]
+  },
+  "tenere": {
+   "presente": [
+    [
+     "tengo"
+    ],
+    [
+     "tieni"
+    ],
+    [
+     "tiene"
+    ],
+    [
+     "teniamo"
+    ],
+    [
+     "tenete"
+    ],
+    [
+     "tengono"
+    ]
+   ],
+   "participio": [
+    "tenuto"
+   ]
+  },
+  "scegliere": {
+   "presente": [
+    [
+     "scelgo"
+    ],
+    [
+     "scegli"
+    ],
+    [
+     "sceglie"
+    ],
+    [
+     "scegliamo"
+    ],
+    [
+     "scegliete"
+    ],
+    [
+     "scelgono"
+    ]
+   ],
+   "participio": [
+    "scelto"
+   ]
+  },
+  "offrire": {
+   "presente": [
+    [
+     "offro"
+    ],
+    [
+     "offri"
+    ],
+    [
+     "offre"
+    ],
+    [
+     "offriamo"
+    ],
+    [
+     "offrite"
+    ],
+    [
+     "offrono"
+    ]
+   ],
+   "participio": [
+    "offerto"
+   ]
+  },
+  "pulire": {
+   "presente": [
+    [
+     "pulisco"
+    ],
+    [
+     "pulisci"
+    ],
+    [
+     "pulisce"
+    ],
+    [
+     "puliamo"
+    ],
+    [
+     "pulite"
+    ],
+    [
+     "puliscono"
+    ]
+   ],
+   "participio": [
+    "pulito"
+   ]
+  },
+  "entrare": {
+   "presente": [
+    [
+     "entro"
+    ],
+    [
+     "entri"
+    ],
+    [
+     "entra"
+    ],
+    [
+     "entriamo"
+    ],
+    [
+     "entrate"
+    ],
+    [
+     "entrano"
+    ]
+   ],
+   "participio": [
+    "entrato"
+   ]
+  },
+  "restare": {
+   "presente": [
+    [
+     "resto"
+    ],
+    [
+     "resti"
+    ],
+    [
+     "resta"
+    ],
+    [
+     "restiamo"
+    ],
+    [
+     "restate"
+    ],
+    [
+     "restano"
+    ]
+   ],
+   "participio": [
+    "restato"
+   ]
+  },
+  "portare": {
+   "presente": [
+    [
+     "porto"
+    ],
+    [
+     "porti"
+    ],
+    [
+     "porta"
+    ],
+    [
+     "portiamo"
+    ],
+    [
+     "portate"
+    ],
+    [
+     "portano"
+    ]
+   ],
+   "participio": [
+    "portato"
+   ]
+  }
+ }
+}

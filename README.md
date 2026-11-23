@@ -58,8 +58,9 @@ uv run ruff format src tests
 Die Tests laufen gegen eine eigene SQLite-Datenbank und rufen den externen
 Dienst nicht auf. GitHub Actions führt Linter, Formatprüfung, Tests und einen
 Docker-Build mit Health-Check bei jedem Push aus (`.github/workflows/ci.yml`).
-70 Tests, 96 % Abdeckung; jeder Test ist in `docs/testing.md` mit seinem Zweck
-beschrieben.
+131 Tests, 96 % Abdeckung; jeder Test ist in `docs/testing.md` mit seinem Zweck
+beschrieben. Alle Verbformen werden mit einem unabhängigen Wörterbuch
+(Verbiste) abgeglichen.
 
 ## Local deployment
 
@@ -121,7 +122,11 @@ Weitere Dokumentation:
 
 * Beispielsätze: [Tatoeba](https://tatoeba.org), Lizenz CC BY 2.0 FR. Jeder
   angezeigte Satz verlinkt auf seine Quelle.
-* Die Konjugationen wurden gegen die Verbiste-Daten (via mlconjug3) geprüft;
-  Abweichungen betreffen nur veraltete Nebenformen (z. B. *debbo*, *veggo*).
+* Die Konjugationen werden gegen die Verbiste-Daten (via mlconjug3, Verbiste
+  unter GNU GPL) automatisch geprüft: `tests/test_verbiste_abgleich.py` mit der
+  Referenz `tests/data/verbiste_referenz.json`. Die Daten dienen nur als
+  Prüfreferenz für die Tests. Abweichungen betreffen veraltete Nebenformen
+  (z. B. *debbo*, *veggo*) und drei Fehler in Verbiste selbst (*bere*, Partizip
+  von *sapere* und *perdere*), die in der Referenzdatei begründet sind.
 * Code: MIT-Lizenz (siehe `LICENSE`).
 * Umgesetzt mit Unterstützung eines KI-Assistenten (Claude, Anthropic).

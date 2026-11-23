@@ -4,8 +4,9 @@ Diese Seite erklärt, welche automatischen Tests es gibt, wie sie laufen und
 **wozu** jeder einzelne da ist. Sie ist bewusst in einfacher Sprache
 geschrieben: Jeder Test soll sich in einem Satz erklären lassen.
 
-Kurzfassung: **70 Testfälle**, alle grün, **96 % Abdeckung** des Codes, bei
-jedem Pull Request automatisch ausgeführt (Stand 21.11.2026).
+Kurzfassung: **131 Testfälle**, alle grün, **96 % Abdeckung** des Codes, bei
+jedem Pull Request automatisch ausgeführt (Stand 23.11.2026). Dazu gehört ein
+Abgleich **aller** Verbformen mit einem unabhängigen Wörterbuch (siehe unten).
 
 ## Warum wir testen
 
@@ -24,6 +25,7 @@ sieht:
 | --- | --- | --- | --- |
 | **Unittests Konjugation** | `tests/test_conjugation.py` (34 Fälle) | Formen, Partizipien, Antwortprüfung, Zeiten-Registry, Suche | nichts: keine Datenbank, kein Netz |
 | **Unittests Lernlogik** | `tests/test_learning.py` (19 Fälle) | Karteikasten, Freischaltung, Auswahl der nächsten Aufgabe, Fachfilter | nichts |
+| **Abgleich mit Wörterbuch** | `tests/test_verbiste_abgleich.py` (61 Fälle) | alle 60 Verben: jede Presente-Form und jedes Partizip gegen Verbiste | Referenzdatei `tests/data/verbiste_referenz.json` |
 | **API-Tests** (Integration) | `tests/test_api.py` (17 Fälle) | Endpunkte zusammen mit der Datenbank | eigene SQLite-Testdatenbank (`tests/conftest.py`) |
 | **CI** | `.github/workflows/ci.yml` | ruff, Formatprüfung, alle Tests, `node --check` für `app.js`, Docker-Bau mit Health-Check | GitHub Actions |
 | **Manuell** | – | Oberfläche im Browser und am Handy | laufende App |
@@ -117,6 +119,39 @@ aufgerufen, sondern durch eine feste Antwort ersetzt (`monkeypatch` in
 | `test_box_filter_counts_new_items_as_box_1` | Neue Formen zählen als Fach 1. |
 | `test_box_filter_returns_none_when_nothing_matches` | Liegt in der Auswahl nichts, gibt es keine Aufgabe statt einer falschen. |
 
+### Abgleich mit einem unabhängigen Wörterbuch (`test_verbiste_abgleich.py`)
+
+Warum: Die Konjugationstests oben prüfen **Stichproben** (10 Verben im
+Presente, 5 Partizipien). Für die übrigen Verben prüfte bis zum 23.11. nur
+`test_all_verbs_conjugate_in_all_tenses`, dass sechs **nicht leere** Formen
+herauskommen, nicht, dass sie **richtig** sind. Da die App verspricht, dass
+man die Formen nicht selbst zusammentragen muss, müssen alle stimmen.
+
+Wie: Die Referenz `tests/data/verbiste_referenz.json` stammt aus
+**Verbiste**, einem freien italienischen Konjugationswörterbuch, gelesen über
+das Python-Paket mlconjug3. Sie ist bewusst **nicht** aus Coniuga erzeugt,
+sonst würde der Test nur sich selbst bestätigen. Nennt Verbiste mehrere
+Varianten (z. B. *devo/debbo*, *gioco/giuoco*, *veduto/visto*), gilt jede als
+richtig.
+
+| Test | Warum |
+| --- | --- |
+| `test_reference_covers_all_verbs` | Die Referenz enthält genau die 60 Verben der App; ein neues Verb ohne Referenz fällt auf. |
+| `test_forms_match_verbiste` (60 Verben) | Jede der 6 Presente-Formen und das Partizip jedes Verbs kommt in der Referenz vor, zusammen 420 Formen. Das Passato prossimo setzt sich aus Hilfsverb und Partizip zusammen. |
+
+Ergebnis des ersten Abgleichs: **keine falsche Form in Coniuga.** 397 Formen
+waren identisch. Bei 16 nennt Verbiste zusätzlich eine alte Nebenform, Coniuga
+zeigt die heute übliche. Bei 7 Formen lag der Fehler im Wörterbuch selbst; sie
+sind in der Referenzdatei unter `_korrekturen` begründet und von Hand
+korrigiert:
+
+* *bere*: Verbiste liefert «vo, vi, ve …» statt *bevo, bevi, beve …*.
+* *sapere*: Verbiste liefert als Partizip die weibliche Form «saputa».
+* *perdere*: Verbiste liefert als Partizip «perdo/perduto»; richtig sind *perso* und *perduto*.
+
+Gegenprobe: Wird in der Referenz eine Form absichtlich verfälscht, schlägt der
+Test fehl (`AssertionError: ('andare', 0, 'vado')`).
+
 ### API (`test_api.py`)
 
 | Test | Warum |
@@ -154,6 +189,8 @@ aufgerufen, sondern durch eine feste Antwort ersetzt (`monkeypatch` in
 | F10 Beispielsätze | `test_examples_endpoint_uses_service`, `test_parse_tatoeba_response` |
 | F12 Nachschlagen auf Deutsch | `test_find_verbs_*`, `test_search_verbs_endpoint` |
 | F13 Üben nach Fach | `test_box_filter_*`, `test_exercise_box_filter` |
+
+Alle Verbformen (F2, F5) prüft zusätzlich `test_forms_match_verbiste`.
 
 F11 (weitere Zeiten) ist nicht umgesetzt; dass eine neue Zeit ohne
 Codeänderung freigeschaltet würde, prüft `test_new_tense_is_unlocked_generically`.
